@@ -14,7 +14,9 @@
     "typecheck": "tsc -p packages/game-core --noEmit && tsc -p content --noEmit && tsc -p apps/web --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "simulate": "node scripts/simulate.ts --seeds 50",
+    "simulate:quick": "node scripts/simulate.ts --seeds 10 --no-write"
   },
   "devDependencies": {
     "@playwright/test": "^1.63.0",
