@@ -52,3 +52,31 @@ Create an original vertical mobile game background for DASTAKHAN, a warm Kazakh 
 Design a high-fidelity portrait mobile game screen concept for an original Kazakh food match-3 game, DASTAKHAN. Warm premium casual-game art, dark teal and cream palette, restrained gold ornament, friendly dimensional food sprites: baursak dough pillows, white kurt cheese clusters, burgundy kazy slices, triangular samsa, golden zhent cylinders and turquoise tea bowls. A large square ELEVEN-column by ELEVEN-row board dominates the screen, compact goals and remaining-moves HUD above, small pause and help controls. Show a golden ram-head special tile and a cauldron bonus. Food is clearly readable and the screen is uncluttered. Avoid copied branding and excessive decorative frames. This is an art direction reference; exact grid count, readable text and interactions will be implemented in code and must not be inferred as correct from the generated image.
 
 A generated reference may contain the wrong cell count. Code must create exactly 121 cells. Verify actual image dimensions/transparency rather than assuming prompt compliance.
+
+## Rules v2 additions (GAME_SPEC 1.2) — same shared prefix
+
+Use the same shared prefix as above and append exactly ONE description. The game now has 11 food types; any 5–6 appear on one board, but all 11 must stay distinct from each other by silhouette at 28–34 px. LINE_H and LINE_V are no longer drawn as ribbons over food: they use their own sprites with a programmatic base-food badge and code-drawn directional chevrons, so leave a calm central area for the badge.
+
+food-manty.png:
+One plump pale steamed manty dumpling, soft warm-ivory dough with a pleated, gathered and pinched top knot, pleats radiating down the upper half. Tall rounded purse silhouette with a flat base. Warm ivory, not cool white, so it differs from kurt; taller and paler than plov. No plate, no steam hiding the outline.
+
+food-shelpek.png:
+One thin round golden shelpek flatbread disc seen at a tilted angle, pale golden surface with a few dark toasted blisters and a slightly raised edge, visible thin side. Wide flat oval silhouette. Must not read as a baursak: no puffy pillow, no diamond corners. No plate.
+
+food-chakchak.png:
+A glossy honey-amber chak-chak mound shaped like a small rounded pyramid of many small fried dough nuggets, each nugget with a tiny glossy highlight, with one honey drizzle with a drip. Bumpy pyramid silhouette, deep amber colour. Must not read as kurt: many small amber pieces, not three large white balls. No plate.
+
+food-plov.png:
+A compact low dome of golden plov rice with short orange carrot strips and one small whole garlic bulb on top, served on a small round cream plate with a cobalt-blue ring. Dome-on-a-brim silhouette. Must not read as samsa, zhent or manty: rounded dome, no triangle, no fluting, no pleats.
+
+food-lagman.png:
+A deep terracotta ceramic bowl with a cream ornament band, heaped with thick hand-pulled yellow noodles, red pepper pieces, green vegetable pieces and a few meat cubes above the rim. Deeper and more colourful than the turquoise tea piala, with a heaped top instead of a flat liquid surface. No chopsticks, no steam hiding the outline.
+
+special-uchpuchmak.png:
+One golden baked Tatar uchpuchmak pastry lying horizontally: a wide triangular pastry with crimped seams rising to a small round opening on top that shows a hint of filling, two pointed corners reaching far left and right. Wide horizontal silhouette that suggests a row. Leave the front face calm for a programmatic food badge. No arrows, no badge baked in, no plate.
+
+special-kumys.png:
+One upright brown leather torsyk flask of kumys: a tall rounded leather body with a narrow neck, cream decorative stitching along the edges, a small gold ram-horn ornament, short leather strap loops, and a white kumys splash crown at the opening. Tall vertical silhouette that suggests a column. Leave the belly calm for a programmatic food badge. No arrows, no badge baked in, no text.
+
+special-besh.png:
+A festive round platter of beshbarmak seen from three-quarter view: wide pale noodle sheets, sliced boiled meat and white onion rings heaped low in the centre, on a cream platter with a thick gold rim, a teal dotted ornament ring and a warm gold rim glow. Wide oval platter silhouette. Universal power-up: no food badge, no text, no people, no cutlery.

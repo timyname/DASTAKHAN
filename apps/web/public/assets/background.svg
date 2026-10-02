@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920">
+<defs>
+<pattern id="tw" width="14" height="14" patternUnits="userSpaceOnUse"><path d="M-4 4L4-4M0 14L14 0M10 18L18 10" stroke="#0A2824" stroke-width="2.5" stroke-opacity=".32"/></pattern>
+<radialGradient id="l" cx="540" cy="820" r="1000" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2E6A60" stop-opacity="0.75"/><stop offset="0.55" stop-color="#1E5149" stop-opacity="0.35"/><stop offset="1" stop-color="#143F3A" stop-opacity="0"/></radialGradient>
+<radialGradient id="v" cx="540" cy="960" r="1180" gradientUnits="userSpaceOnUse"><stop offset="0.55" stop-color="#06201D" stop-opacity="0"/><stop offset="1" stop-color="#06201D" stop-opacity="0.6"/></radialGradient>
+<g id="m" fill="none" stroke-width="5" stroke-linecap="round"><path d="M0 30V2M0 2C0-20-30-27-39-8C-45 6-31 17-22 9C-15 3-20-6-27-3M0 2C0-20 30-27 39-8C45 6 31 17 22 9C15 3 20-6 27-3"/></g>
+<path id="r" d="M0-16L10 0L0 16L-10 0Z" fill="none" stroke-width="4" stroke-linejoin="round"/>
+</defs>
+<rect width="1080" height="1920" fill="#143F3A"/>
+<rect width="1080" height="1920" fill="url(#l)"/>
+<rect width="1080" height="1920" fill="url(#tw)"/>
+<rect width="1080" height="1920" fill="url(#v)"/>
+<rect x="34" y="34" width="1012" height="1852" rx="30" fill="none" stroke="#E6B65A" stroke-opacity=".38" stroke-width="3"/>
+<rect x="48" y="48" width="984" height="1824" rx="22" fill="none" stroke="#FFF4DF" stroke-opacity=".12" stroke-width="2"/>
+<g stroke="#FFF4DF" stroke-opacity=".2">
+<use href="#m" transform="translate(240 92)"/>
+<use href="#m" transform="translate(240 1828) rotate(180)"/>
+<use href="#m" transform="translate(360 92)"/>
+<use href="#m" transform="translate(360 1828) rotate(180)"/>
+<use href="#m" transform="translate(480 92)"/>
+<use href="#m" transform="translate(480 1828) rotate(180)"/>
+<use href="#m" transform="translate(600 92)"/>
+<use href="#m" transform="translate(600 1828) rotate(180)"/>
+<use href="#m" transform="translate(720 92)"/>
+<use href="#m" transform="translate(720 1828) rotate(180)"/>
+<use href="#m" transform="translate(840 92)"/>
+<use href="#m" transform="translate(840 1828) rotate(180)"/>
+<circle cx="66" cy="240" r="3.5" fill="#FFF4DF" fill-opacity=".22" stroke="none"/>
+<circle cx="1014" cy="240" r="3.5" fill="#FFF4DF" fill-opacity=".22" stroke="none"/>
+<use href="#r" transform="translate(66 320)"/>
+<use href="#r" transform="translate(1014 320)"/>
+<circle cx="66" cy="400" r="3.5" fill="#FFF4DF" fill-opacity=".22" stroke="none"/>
+<circle cx="1014" cy="400" r="3.5" fill="#FFF4DF" fill-opacity=".22" stroke="none"/>
+<use href="#r" transform="translate(66 480)"/>
+<use href="#r" transform="translate(1014 480)"/>
+<circle cx="66" cy="560" r="3.5" fill="#FFF4DF" fill-opacity=".22" stroke="none"/>
+<circle cx="1014" cy="560" r="3.5" fill="#FFF4DF" fill-opacity=".22" stroke="none"/>
+<use href="#r" transform="translate(66 640)"/>
+<use href="#r" transform="translate(1014 640)"/>
+<circle cx="66" cy="720" r="3.5" fill="#FFF4DF" fill-opacity=".22" stroke="none"/>
+<circle cx="1014" cy="720" r="3.5" fill="#FFF4DF" fill-opacity=".22" stroke="none"/>
+<use href="#r" transform="translate(66 800)"/>
+<use href="#r" transform="translate(1014 800)"/>
+<circle cx="66" cy="880" r="3.5" fill="#FFF4DF" fill-opacity=".22" stroke="none"/>
+<circle cx="1014" cy="880" r="3.5" fill="#FFF4DF" fill-opacity=".22" stroke="none"/>
+<use href="#r" transform="translate(66 960)"/>
+<use href="#r" transform="translate(1014 960)"/>
+<circle cx="66" cy="1040" r="3.5" fill="#FFF4DF" fill-opacity=".22" stroke="none"/>
+<circle cx="1014" cy="1040" r="3.5" fill="#FFF4DF" fill-opacity=".22" stroke="none"/>
+<use href="#r" transform="translate(66 1120)"/>
+<use href="#r" transform="translate(1014 1120)"/>
+<circle cx="66" cy="1200" r="3.5" fill="#FFF4DF" fill-opacity=".22" stroke="none"/>
+<circle cx="1014" cy="1200" r="3.5" fill="#FFF4DF" fill-opacity=".22" stroke="none"/>
+<use href="#r" transform="translate(66 1280)"/>
+<use href="#r" transform="translate(1014 1280)"/>
+<circle cx="66" cy="1360" r="3.5" fill="#FFF4DF" fill-opacity=".22" stroke="none"/>
+<circle cx="1014" cy="1360" r="3.5" fill="#FFF4DF" fill-opacity=".22" stroke="none"/>
+<use href="#r" transform="translate(66 1440)"/>
+<use href="#r" transform="translate(1014 1440)"/>
+<circle cx="66" cy="1520" r="3.5" fill="#FFF4DF" fill-opacity=".22" stroke="none"/>
+<circle cx="1014" cy="1520" r="3.5" fill="#FFF4DF" fill-opacity=".22" stroke="none"/>
+<use href="#r" transform="translate(66 1600)"/>
+<use href="#r" transform="translate(1014 1600)"/>
+<circle cx="66" cy="1680" r="3.5" fill="#FFF4DF" fill-opacity=".22" stroke="none"/>
+<circle cx="1014" cy="1680" r="3.5" fill="#FFF4DF" fill-opacity=".22" stroke="none"/>
+</g>
+<use href="#m" transform="translate(94 94) rotate(135) scale(1.25)" stroke="#E6B65A" stroke-opacity=".5"/>
+<use href="#m" transform="translate(986 94) rotate(-135) scale(1.25)" stroke="#E6B65A" stroke-opacity=".5"/>
+<use href="#m" transform="translate(94 1826) rotate(45) scale(1.25)" stroke="#E6B65A" stroke-opacity=".5"/>
+<use href="#m" transform="translate(986 1826) rotate(-45) scale(1.25)" stroke="#E6B65A" stroke-opacity=".5"/>
+<path d="M150 150H930M150 1770H930" stroke="#E6B65A" stroke-opacity=".18" stroke-width="2" stroke-dasharray="2 14" stroke-linecap="round"/>
+</svg>

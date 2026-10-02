@@ -1,0 +1,228 @@
+/* Tile art (apps/web/src/art). Class names are prefixed `art-`.
+   Art never receives pointer input: the board cell underneath handles it. */
+
+.art-tile,
+.art-crumbs {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.art-icon {
+  position: relative;
+  display: inline-block;
+  flex: none;
+  vertical-align: middle;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.art-tile *,
+.art-crumbs *,
+.art-icon * {
+  pointer-events: none;
+}
+
+.art-sprite {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+.art-overlay {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Contrasting circular badge showing the base food (BOMB, LINE_H, LINE_V). */
+.art-badge {
+  position: absolute;
+  left: 23%;
+  top: 30%;
+  width: 54%;
+  height: 54%;
+}
+
+/* LINE_H «Учпучмак»: badge on the pastry's front face, centred on the chevron row (56%). */
+.art-badge--line-h {
+  left: 25%;
+  top: 31%;
+  width: 50%;
+  height: 50%;
+}
+
+/* LINE_V «Кумыс»: badge on the flask belly, centred on the chevron column (50%). */
+.art-badge--line-v {
+  left: 25%;
+  top: 27%;
+  width: 50%;
+  height: 50%;
+}
+
+.art-badge__disc {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.art-badge__food {
+  position: absolute;
+  inset: 6%;
+}
+
+/* RAM / BESH: soft gold glow behind the universal emblem. */
+.art-glow {
+  position: absolute;
+  inset: -3%;
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    rgba(255, 220, 120, 0.95),
+    rgba(240, 186, 70, 0.55) 55%,
+    rgba(240, 190, 90, 0) 100%
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Playable CSS fallback when a sprite fails to load.                  */
+/* ------------------------------------------------------------------ */
+
+.art-fallback {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.art-fallback__shape {
+  position: absolute;
+  inset: 13%;
+  border-radius: 24%;
+  box-shadow:
+    0 0 0 1.5px rgba(255, 244, 223, 0.6),
+    inset 0 0 0 2px rgba(0, 0, 0, 0.28),
+    inset 3px 4px 0 rgba(255, 255, 255, 0.35);
+}
+
+.art-fallback--circle .art-fallback__shape {
+  border-radius: 50%;
+}
+
+.art-fallback--oval .art-fallback__shape {
+  inset: 20% 9%;
+  border-radius: 50%;
+}
+
+.art-fallback--diamond .art-fallback__shape {
+  inset: 19%;
+  border-radius: 18%;
+  transform: rotate(45deg);
+}
+
+.art-fallback--triangle .art-fallback__shape {
+  inset: 9% 7% 12%;
+  border-radius: 0;
+  clip-path: polygon(50% 2%, 99% 96%, 1% 96%);
+  box-shadow: none;
+}
+
+.art-fallback--rounded .art-fallback__shape {
+  inset: 14% 18%;
+  border-radius: 22%;
+}
+
+.art-fallback--bowl .art-fallback__shape {
+  inset: 22% 9% 14%;
+  border-radius: 14% 14% 50% 50% / 14% 14% 80% 80%;
+}
+
+.art-fallback--drop .art-fallback__shape {
+  inset: 12% 15% 13%;
+  border-radius: 50% 50% 46% 46% / 62% 62% 38% 38%;
+}
+
+.art-fallback--disc .art-fallback__shape {
+  inset: 28% 6%;
+  border-radius: 50%;
+  transform: rotate(-14deg);
+}
+
+.art-fallback--mound .art-fallback__shape {
+  inset: 16% 10% 14%;
+  border-radius: 50% 50% 18% 18% / 80% 80% 20% 20%;
+}
+
+.art-fallback--dome .art-fallback__shape {
+  inset: 24% 8% 16%;
+  border-radius: 50% 50% 14% 14% / 90% 90% 20% 20%;
+}
+
+.art-fallback--deep-bowl .art-fallback__shape {
+  inset: 14% 9% 10%;
+  border-radius: 10% 10% 46% 46% / 10% 10% 60% 60%;
+}
+
+.art-fallback--wide-triangle .art-fallback__shape {
+  inset: 14% 4% 16%;
+  border-radius: 0;
+  clip-path: polygon(50% 4%, 100% 92%, 0% 92%);
+  box-shadow: none;
+}
+
+.art-fallback--flask .art-fallback__shape {
+  inset: 8% 22% 8%;
+  border-radius: 30% 30% 46% 46% / 20% 20% 40% 40%;
+}
+
+.art-fallback--platter .art-fallback__shape {
+  inset: 24% 6% 18%;
+  border-radius: 50%;
+}
+
+.art-fallback__glyph {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  font-family: system-ui, 'Segoe UI Symbol', 'Noto Sans Symbols 2', sans-serif;
+}
+
+.art-crumbs__fallback {
+  position: absolute;
+  inset: 6%;
+  border-radius: 22%;
+  background:
+    radial-gradient(circle at 18% 20%, #d6ad72 0 5%, transparent 6%),
+    radial-gradient(circle at 82% 16%, #d6ad72 0 4%, transparent 5%),
+    radial-gradient(circle at 14% 72%, #d6ad72 0 5%, transparent 6%),
+    radial-gradient(circle at 86% 84%, #d6ad72 0 5%, transparent 6%),
+    radial-gradient(circle at 50% 92%, #d6ad72 0 4%, transparent 5%),
+    rgba(226, 190, 136, 0.2);
+}
+
+.art-crumbs--hp2 .art-crumbs__fallback {
+  background:
+    radial-gradient(circle at 18% 20%, #c79a5c 0 6%, transparent 7%),
+    radial-gradient(circle at 50% 8%, #c79a5c 0 4%, transparent 5%),
+    radial-gradient(circle at 82% 16%, #c79a5c 0 5%, transparent 6%),
+    radial-gradient(circle at 10% 46%, #c79a5c 0 4%, transparent 5%),
+    radial-gradient(circle at 90% 50%, #c79a5c 0 4%, transparent 5%),
+    radial-gradient(circle at 14% 72%, #c79a5c 0 6%, transparent 7%),
+    radial-gradient(circle at 86% 84%, #c79a5c 0 6%, transparent 7%),
+    radial-gradient(circle at 50% 92%, #c79a5c 0 5%, transparent 6%),
+    rgba(214, 173, 114, 0.36);
+}
