@@ -3,14 +3,36 @@
  * Every consumer (engine, web UI, content, editor, later server replay) imports from here.
  */
 
-export const RULES_VERSION = 1;
+export const RULES_VERSION = 2;
 export const BOARD_SIZE = 11;
 
-/** Food types. This order is also the RAM tie-break order (GAME_SPEC §4). */
-export const FOOD_TYPES = ['baursak', 'kurt', 'kazy', 'samsa', 'zhent', 'tea'] as const;
+/**
+ * All 11 food types (GAME_SPEC §2). Each level uses a subset of 5–6.
+ * This order is also the tie-break order for RAM and BESH targeting (GAME_SPEC §4).
+ */
+export const FOOD_TYPES = [
+  'baursak',
+  'kurt',
+  'kazy',
+  'samsa',
+  'zhent',
+  'tea',
+  'manty',
+  'shelpek',
+  'chakchak',
+  'plov',
+  'lagman',
+] as const;
 export type FoodType = (typeof FOOD_TYPES)[number];
 
-export type SpecialKind = 'LINE_H' | 'LINE_V' | 'BOMB' | 'RAM';
+/**
+ * LINE_H «Учпучмак» (row), LINE_V «Кумыс» (column), BOMB «Казан» (3×3),
+ * RAM «Золотой барашек», BESH «Бешбармак». RAM and BESH are universal (base = null).
+ */
+export type SpecialKind = 'LINE_H' | 'LINE_V' | 'BOMB' | 'RAM' | 'BESH';
+
+/** Number of most frequent food types targeted by BESH («Дастархан для всех»). */
+export const BESH_TARGET_TYPES = 3;
 
 /** Bounds recorded with the rules version (GAME_SPEC §5). */
 export const RULE_LIMITS = {
@@ -27,7 +49,7 @@ export const SCORE_PER_OBSTACLE = 20;
 export interface Tile {
   /** Stable deterministic id; survives falls, never reused within a game. */
   id: number;
-  /** Food base type. null only for RAM. */
+  /** Food base type. null only for the universal specials RAM and BESH. */
   base: FoodType | null;
   /** null for an ordinary food piece. */
   special: SpecialKind | null;
@@ -121,7 +143,14 @@ export interface TileRef {
 }
 
 /** Shape of a detected matching component. */
-export type MatchShape = 'line3' | 'line4h' | 'line4v' | 'lt' | 'line5';
+export type MatchShape =
+  | 'line3'
+  | 'line4h'
+  | 'line4v'
+  | 'lt'
+  | 'line5'
+  /** A run of 5+ crossing a perpendicular run of 4+ → BESH. */
+  | 'besh';
 
 export type EffectKind =
   | 'row' // LINE_H
@@ -133,11 +162,13 @@ export type EffectKind =
   | 'square5' // BOMB + BOMB
   | 'ramLine' // RAM + LINE conversion
   | 'ramBomb' // RAM + BOMB conversion
-  | 'bigToi' // RAM + RAM «Большой той»
+  | 'bigToi' // RAM + RAM, BESH + RAM, BESH + BESH «Большой той»
+  | 'besh' // BESH «Дастархан для всех»: three most frequent types + centered 5×5
   | 'none'; // RAM hit with no baseType left on the board
 
 export type GameEvent =
   | { type: 'swap'; from: Pos; to: Pos; tileA: number; tileB: number }
+  /** tileA/tileB are -1 for a position outside the board. */
   | { type: 'swapRejected'; from: Pos; to: Pos; tileA: number; tileB: number; reason: RejectReason }
   | { type: 'cascadeStarted'; wave: number; multiplier: number }
   | {
@@ -157,6 +188,8 @@ export type GameEvent =
       center: Pos;
       /** Food type targeted by RAM effects. */
       targetType?: FoodType;
+      /** Food types targeted by a BESH effect (most frequent first). */
+      targetTypes?: FoodType[];
       /** Unique cells affected by this activation, row-major order. */
       cells: Pos[];
     }
@@ -212,9 +245,10 @@ export type GameEventType = GameEvent['type'];
 
 /**
  * Board fixture: 11 strings, each with 11 space-separated 2-char tokens.
- * First char = food: B baursak, K kurt, Z kazy, S samsa, J zhent, T tea.
+ * First char = food: B baursak, K kurt, Z kazy, S samsa, J zhent, T tea,
+ * M manty, H shelpek, C chakchak, P plov, L lagman.
  * Second char = kind: '.' ordinary, 'h' LINE_H, 'v' LINE_V, 'b' BOMB.
- * RAM is written as "RR".
+ * RAM is written as "RR", BESH as "XX".
  * Example row: "B. K. Zh S. J. T. RR B. K. Z. S."
  */
 export type BoardFixture = string[];
@@ -227,7 +261,7 @@ export interface TutorialStep {
 }
 
 export interface TutorialDefinition {
-  id: 'tutorial-line' | 'tutorial-bomb' | 'tutorial-ram' | 'tutorial-ram-ram';
+  id: 'tutorial-line' | 'tutorial-bomb' | 'tutorial-ram' | 'tutorial-ram-ram' | 'tutorial-besh';
   version: number;
   rulesVersion: number;
   titleKey: string;
