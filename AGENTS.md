@@ -11,3 +11,9 @@ All model-facing instructions and development documentation must be in English. 
 7. Never claim tests or browser checks passed without running them.
 8. Update `docs/STATUS.md` and README with actual commands and limitations.
 9. Do not commit secrets, `.env`, dependencies or build output.
+
+## REDESIGN — read before the next frontend task
+
+<!-- CODING AGENT: The owner requested a premium mobile-only redesign. Read REDESIGN.md before making further UI changes. -->
+
+Read [REDESIGN.md](REDESIGN.md) and implement it against the current game source. It supersedes earlier desktop-layout and decorative frontend guidance, while docs/GAME_SPEC.md remains authoritative for mechanics. Inspect local uncommitted work first. Use the six skills listed in REDESIGN.md when available; follow its explicit requirements when they are not installed. Keep all model-facing instructions in English and the player-facing interface in Russian.
