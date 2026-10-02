@@ -1,0 +1,11 @@
+{
+  "name": "@dastakhan/game-core",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Pure deterministic DASTAKHAN rules engine shared by the browser and later server replays.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "types": "./src/index.ts"
+}

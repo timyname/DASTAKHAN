@@ -1,0 +1,7 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "types": []
+  },
+  "include": ["*.ts", "levels/*.json", "tutorials/*.json"]
+}

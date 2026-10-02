@@ -1,0 +1,25 @@
+{
+  "name": "dastakhan",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*",
+    "content"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w @dastakhan/web",
+    "build": "npm run build -w @dastakhan/web",
+    "preview": "npm run preview -w @dastakhan/web",
+    "typecheck": "tsc -p packages/game-core --noEmit && tsc -p content --noEmit && tsc -p apps/web --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^26.6.4",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.3"
+  }
+}

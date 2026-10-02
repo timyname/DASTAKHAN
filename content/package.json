@@ -1,0 +1,14 @@
+{
+  "name": "@dastakhan/content",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Schema-validated DASTAKHAN level and tutorial definitions.",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "types": "./index.ts",
+  "dependencies": {
+    "@dastakhan/game-core": "*"
+  }
+}
