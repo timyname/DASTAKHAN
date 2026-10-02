@@ -1,6 +1,10 @@
 import type { EffectKind } from '@dastakhan/game-core';
 
-/** Animation timings in ms (prompt 03). All values are configurable here. */
+/**
+ * Board animation timings in ms (prompt 03, REDESIGN.md motion table). The board uses
+ * CSS transform/opacity transitions driven by engine events; UI motion tokens live in
+ * src/motion. All values are configurable here.
+ */
 export interface Timings {
   swap: number;
   reject: number;
@@ -23,7 +27,7 @@ export const NORMAL_TIMINGS: Timings = {
   swap: 140,
   reject: 140,
   remove: 160,
-  fallBase: 90,
+  fallBase: 100,
   fallPerCell: 25,
   fallMax: 280,
   line: 240,
