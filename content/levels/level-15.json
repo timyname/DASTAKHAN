@@ -1,0 +1,40 @@
+{
+  "id": "level-15",
+  "version": 1,
+  "rulesVersion": 2,
+  "rows": 11,
+  "cols": 11,
+  "allowedTypes": ["baursak", "kazy", "tea", "shelpek", "plov", "lagman"],
+  "moveLimit": 32,
+  "goals": [
+    { "kind": "clearCrumbs", "count": 25 },
+    { "kind": "collect", "type": "tea", "count": 40 }
+  ],
+  "overlays": [
+    { "row": 3, "col": 3, "hp": 2 },
+    { "row": 3, "col": 4, "hp": 2 },
+    { "row": 3, "col": 5, "hp": 2 },
+    { "row": 3, "col": 6, "hp": 2 },
+    { "row": 3, "col": 7, "hp": 2 },
+    { "row": 4, "col": 3, "hp": 2 },
+    { "row": 4, "col": 4, "hp": 2 },
+    { "row": 4, "col": 5, "hp": 2 },
+    { "row": 4, "col": 6, "hp": 2 },
+    { "row": 4, "col": 7, "hp": 2 },
+    { "row": 5, "col": 3, "hp": 2 },
+    { "row": 5, "col": 4, "hp": 2 },
+    { "row": 5, "col": 5, "hp": 2 },
+    { "row": 5, "col": 6, "hp": 2 },
+    { "row": 5, "col": 7, "hp": 2 },
+    { "row": 6, "col": 3, "hp": 2 },
+    { "row": 6, "col": 4, "hp": 2 },
+    { "row": 6, "col": 5, "hp": 2 },
+    { "row": 6, "col": 6, "hp": 2 },
+    { "row": 6, "col": 7, "hp": 2 },
+    { "row": 7, "col": 3, "hp": 2 },
+    { "row": 7, "col": 4, "hp": 2 },
+    { "row": 7, "col": 5, "hp": 2 },
+    { "row": 7, "col": 6, "hp": 2 },
+    { "row": 7, "col": 7, "hp": 2 }
+  ]
+}

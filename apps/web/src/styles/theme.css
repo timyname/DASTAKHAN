@@ -1,0 +1,87 @@
+/*
+ * DASTAKHAN theme tokens. Palette from prompt 03:
+ * dark teal #143F3A, cream #FFF4DF, gold #E6B65A, terracotta #B75C46.
+ * The game uses one fixed festive palette (no light/dark switching).
+ */
+:root {
+  /* Core palette */
+  --teal: #143f3a;
+  --cream: #fff4df;
+  --gold: #e6b65a;
+  --terracotta: #b75c46;
+
+  /* Derived shades */
+  --teal-950: #0a2522;
+  --teal-900: #0e302c;
+  --teal-800: #113833;
+  --teal-700: #1b4e48;
+  --teal-600: #245f57;
+  --teal-500: #2e756b;
+  --teal-300: #86b8ad;
+
+  --cream-50: #fffbf3;
+  --cream-100: #fff8ea;
+  --cream-200: #f7e8cb;
+  --cream-300: #ecd6aa;
+
+  --gold-200: #f6dda5;
+  --gold-300: #f2d08e;
+  --gold-600: #c9963a;
+  --gold-700: #9a6d22;
+
+  --terracotta-300: #d98b75;
+  --terracotta-600: #a44f3b;
+  --terracotta-700: #8a3f2e;
+
+  /* Text */
+  --ink: #17302c;
+  --ink-soft: #4b605b;
+  --on-dark: var(--cream);
+  --on-dark-soft: rgba(255, 244, 223, 0.8);
+
+  /* Surfaces */
+  --surface: var(--cream);
+  --surface-raised: var(--cream-50);
+  --surface-sunken: var(--cream-200);
+  --surface-dark: rgba(10, 37, 34, 0.78);
+  --surface-dark-line: rgba(230, 182, 90, 0.35);
+  --board-surface: #f6e6c8;
+  --backdrop: rgba(7, 26, 24, 0.72);
+
+  /* Focus */
+  --focus-on-dark: var(--gold-300);
+  --focus-on-light: var(--teal-700);
+
+  /* Shape & depth */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --shadow-press: 0 3px 0 rgba(6, 28, 25, 0.35);
+  --shadow-card: 0 2px 0 rgba(6, 28, 25, 0.12), 0 8px 22px rgba(6, 28, 25, 0.22);
+  --shadow-dialog: 0 18px 50px rgba(3, 18, 16, 0.55);
+
+  /* Type */
+  --font-ui: 'Segoe UI', Roboto, 'Helvetica Neue', 'Noto Sans', Arial, system-ui, sans-serif;
+  --font-display: 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, 'Times New Roman', serif;
+
+  /* Sizing */
+  --tap: 44px;
+  --gutter: 16px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /*
+   * Restrained Kazakh ornament (stylized «қошқар мүйіз» ram-horn curls) as a repeatable strip.
+   * Used only on frames and edges, never behind pieces.
+   */
+  --ornament-horns-gold: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='14' viewBox='0 0 48 14'%3E%3Cg fill='none' stroke='%23E6B65A' stroke-width='1.5' stroke-linecap='round'%3E%3Cpath d='M24 13V9C24 5 20.5 2.6 17.4 3.7 14.9 4.6 15.2 8.3 17.9 8.1 19.6 7.9 19.7 5.9 18.4 5.6'/%3E%3Cpath d='M24 9C24 5 27.5 2.6 30.6 3.7 33.1 4.6 32.8 8.3 30.1 8.1 28.4 7.9 28.3 5.9 29.6 5.6'/%3E%3Cpath d='M0 13H48' stroke-width='1'/%3E%3C/g%3E%3Cg fill='%23E6B65A'%3E%3Cpath d='M5 9.5 7 7.5 9 9.5 7 11.5Z'/%3E%3Cpath d='M39 9.5 41 7.5 43 9.5 41 11.5Z'/%3E%3C/g%3E%3C/svg%3E");
+  --ornament-horns-teal: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='14' viewBox='0 0 48 14'%3E%3Cg fill='none' stroke='%231B4E48' stroke-width='1.5' stroke-linecap='round' opacity='.55'%3E%3Cpath d='M24 13V9C24 5 20.5 2.6 17.4 3.7 14.9 4.6 15.2 8.3 17.9 8.1 19.6 7.9 19.7 5.9 18.4 5.6'/%3E%3Cpath d='M24 9C24 5 27.5 2.6 30.6 3.7 33.1 4.6 32.8 8.3 30.1 8.1 28.4 7.9 28.3 5.9 29.6 5.6'/%3E%3Cpath d='M0 13H48' stroke-width='1'/%3E%3C/g%3E%3Cg fill='%23B75C46' opacity='.7'%3E%3Cpath d='M5 9.5 7 7.5 9 9.5 7 11.5Z'/%3E%3Cpath d='M39 9.5 41 7.5 43 9.5 41 11.5Z'/%3E%3C/g%3E%3C/svg%3E");
+  /* Small rhombus chain for thin borders. */
+  --ornament-diamonds-gold: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='8' viewBox='0 0 16 8'%3E%3Cpath d='M8 1 11 4 8 7 5 4Z' fill='none' stroke='%23E6B65A' stroke-width='1.1'/%3E%3Ccircle cx='0' cy='4' r='.9' fill='%23E6B65A'/%3E%3Ccircle cx='16' cy='4' r='.9' fill='%23E6B65A'/%3E%3C/svg%3E");
+}

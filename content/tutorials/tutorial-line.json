@@ -1,0 +1,45 @@
+{
+  "id": "tutorial-line",
+  "version": 1,
+  "rulesVersion": 2,
+  "titleKey": "tutorial.line.title",
+  "level": {
+    "id": "tutorial-line",
+    "version": 1,
+    "rulesVersion": 2,
+    "rows": 11,
+    "cols": 11,
+    "allowedTypes": ["baursak", "kurt", "kazy", "samsa", "zhent", "tea"],
+    "moveLimit": 5,
+    "goals": [
+      { "kind": "collect", "type": "baursak", "count": 5 }
+    ],
+    "overlays": [],
+    "tutorialId": "tutorial-line"
+  },
+  "board": [
+    "T. Z. B. S. T. Z. Z. T. S. B. Z.",
+    "K. K. J. T. B. Z. K. S. S. T. S.",
+    "B. T. S. J. S. J. J. Z. T. K. Z.",
+    "J. Z. S. S. J. S. T. B. T. K. T.",
+    "J. B. B. S. S. T. K. T. B. B. T.",
+    "B. Z. T. Z. B. J. Z. B. S. K. Z.",
+    "T. K. J. B. B. J. B. B. S. S. B.",
+    "J. S. T. J. J. Z. T. Z. Z. J. K.",
+    "T. K. S. K. B. J. T. J. J. Z. J.",
+    "B. K. S. Bh B. T. J. K. B. T. B.",
+    "Z. B. J. T. K. B. S. J. J. T. J."
+  ],
+  "seed": 1001,
+  "steps": [
+    {
+      "move": { "from": { "row": 4, "col": 4 }, "to": { "row": 3, "col": 4 } },
+      "textKey": "tutorial.line.step1"
+    },
+    {
+      "move": { "from": { "row": 10, "col": 5 }, "to": { "row": 9, "col": 5 } },
+      "textKey": "tutorial.line.step2"
+    }
+  ],
+  "doneTextKey": "tutorial.line.done"
+}

@@ -1,0 +1,35 @@
+{
+  "id": "level-09",
+  "version": 1,
+  "rulesVersion": 2,
+  "rows": 11,
+  "cols": 11,
+  "allowedTypes": ["baursak", "kazy", "tea", "manty", "shelpek", "chakchak"],
+  "moveLimit": 28,
+  "goals": [
+    { "kind": "clearCrumbs", "count": 21 }
+  ],
+  "overlays": [
+    { "row": 0, "col": 5, "hp": 1 },
+    { "row": 1, "col": 5, "hp": 1 },
+    { "row": 2, "col": 5, "hp": 1 },
+    { "row": 3, "col": 5, "hp": 1 },
+    { "row": 4, "col": 5, "hp": 1 },
+    { "row": 5, "col": 0, "hp": 1 },
+    { "row": 5, "col": 1, "hp": 1 },
+    { "row": 5, "col": 2, "hp": 1 },
+    { "row": 5, "col": 3, "hp": 1 },
+    { "row": 5, "col": 4, "hp": 1 },
+    { "row": 5, "col": 5, "hp": 1 },
+    { "row": 5, "col": 6, "hp": 1 },
+    { "row": 5, "col": 7, "hp": 1 },
+    { "row": 5, "col": 8, "hp": 1 },
+    { "row": 5, "col": 9, "hp": 1 },
+    { "row": 5, "col": 10, "hp": 1 },
+    { "row": 6, "col": 5, "hp": 1 },
+    { "row": 7, "col": 5, "hp": 1 },
+    { "row": 8, "col": 5, "hp": 1 },
+    { "row": 9, "col": 5, "hp": 1 },
+    { "row": 10, "col": 5, "hp": 1 }
+  ]
+}

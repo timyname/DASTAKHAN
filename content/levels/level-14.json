@@ -1,0 +1,18 @@
+{
+  "id": "level-14",
+  "version": 1,
+  "rulesVersion": 2,
+  "rows": 11,
+  "cols": 11,
+  "allowedTypes": ["baursak", "kurt", "kazy", "samsa", "zhent", "tea"],
+  "moveLimit": 30,
+  "goals": [
+    { "kind": "collect", "type": "baursak", "count": 25 },
+    { "kind": "collect", "type": "kurt", "count": 25 },
+    { "kind": "collect", "type": "kazy", "count": 25 },
+    { "kind": "collect", "type": "samsa", "count": 25 },
+    { "kind": "collect", "type": "zhent", "count": 25 },
+    { "kind": "collect", "type": "tea", "count": 25 }
+  ],
+  "overlays": []
+}

@@ -1,0 +1,400 @@
+/* Menu screens: start, levels, guide, settings. */
+
+.scr {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 640px;
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: calc(12px + var(--safe-top)) calc(var(--gutter) + var(--safe-right)) calc(24px + var(--safe-bottom))
+    calc(var(--gutter) + var(--safe-left));
+}
+
+.scr--wide {
+  max-width: 980px;
+}
+
+.scr-header {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) 48px;
+  align-items: center;
+  gap: 8px;
+}
+
+.scr-header__spacer {
+  width: 48px;
+  height: 48px;
+}
+
+.scr-title {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  line-height: 1.15;
+  color: var(--cream);
+  text-align: center;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.3);
+  overflow-wrap: anywhere;
+}
+
+.scr-title:focus {
+  outline: none;
+}
+
+.scr-title::after {
+  content: '';
+  display: block;
+  width: 144px;
+  max-width: 100%;
+  height: 14px;
+  margin: 6px auto 0;
+  background: var(--ornament-horns-gold) left center / 48px 14px repeat-x;
+}
+
+.scr-body {
+  display: grid;
+  gap: 16px;
+}
+
+.scr-panel {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  background: var(--surface-dark);
+  box-shadow: inset 0 0 0 1px var(--surface-dark-line);
+}
+
+.scr-panel--light {
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow-card), inset 0 0 0 2px rgba(230, 182, 90, 0.6);
+}
+
+.scr-panel__title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  line-height: 1.2;
+  color: var(--gold-300);
+}
+
+.scr-panel--light .scr-panel__title {
+  color: var(--teal);
+}
+
+.scr-panel__hint {
+  font-size: 0.92rem;
+  color: var(--on-dark-soft);
+}
+
+.scr-panel--light .scr-panel__hint {
+  color: var(--ink-soft);
+}
+
+.scr-empty {
+  padding: 12px 0;
+  color: var(--on-dark-soft);
+  text-align: center;
+}
+
+/* ---------------------------------------------------------------- start */
+
+.scr-start {
+  justify-content: center;
+  gap: 22px;
+  max-width: 460px;
+}
+
+.start-hero {
+  container-type: inline-size;
+  min-width: 0;
+  padding: 26px 16px 22px;
+  border-radius: 28px;
+  background: radial-gradient(120% 90% at 50% 0%, rgba(46, 117, 107, 0.55), rgba(10, 37, 34, 0.82) 70%);
+  box-shadow:
+    inset 0 0 0 1px var(--surface-dark-line),
+    0 20px 50px rgba(3, 18, 16, 0.35);
+  text-align: center;
+}
+
+.start-ornament {
+  width: min(240px, 80%);
+  height: 14px;
+  margin: 0 auto 14px;
+  background: var(--ornament-horns-gold) center / 48px 14px repeat-x;
+}
+
+.start-ornament--bottom {
+  margin: 18px auto 0;
+  transform: scaleY(-1);
+}
+
+.start-title {
+  font-family: var(--font-display);
+  font-size: 2.6rem;
+  font-size: clamp(2rem, 15.5cqi, 3.6rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  color: var(--gold);
+  text-shadow: 0 3px 0 rgba(0, 0, 0, 0.35);
+}
+
+.start-title:focus {
+  outline: none;
+}
+
+.start-tagline {
+  margin-top: 8px;
+  color: var(--on-dark-soft);
+}
+
+/* 11 dishes: two rows of 6 + 5. */
+.start-foods {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  max-width: 250px;
+  margin: 18px auto 0;
+}
+
+.start-food {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  background: var(--cream);
+  box-shadow: 0 3px 0 var(--cream-300), 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.start-menu {
+  display: grid;
+  gap: 12px;
+}
+
+.start-play {
+  display: grid;
+  line-height: 1.15;
+}
+
+.start-play small {
+  font-size: 0.8rem;
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+.start-note {
+  font-size: 0.85rem;
+  color: var(--on-dark-soft);
+  text-align: center;
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  .scr-start {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-content: center;
+    align-items: center;
+    max-width: 860px;
+    gap: 16px 24px;
+  }
+
+  .start-note {
+    grid-column: 1 / -1;
+  }
+
+  .start-hero {
+    padding: 16px;
+  }
+}
+
+/* --------------------------------------------------------------- levels */
+
+.levels-summary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 700;
+  color: var(--gold-300);
+}
+
+.levels-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+  gap: 10px;
+  padding: 0;
+  list-style: none;
+}
+
+.scr-level {
+  position: relative;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 4px;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  min-height: 60px;
+  padding: 4px;
+  border: 0;
+  border-radius: 18px;
+  background: var(--cream);
+  color: var(--teal);
+  box-shadow: 0 3px 0 var(--cream-300), 0 6px 14px rgba(0, 0, 0, 0.25);
+  transition: transform 120ms var(--ease-out);
+  touch-action: manipulation;
+}
+
+.scr-level:active:not(:disabled) {
+  transform: translateY(2px);
+}
+
+.scr-level__num {
+  font-size: 1.55rem;
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.scr-level__meta {
+  display: grid;
+  place-items: center;
+  min-height: 16px;
+}
+
+.scr-level__play {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.scr-level[data-state='current'] {
+  background: var(--gold);
+  color: var(--teal-950);
+  box-shadow: 0 3px 0 var(--gold-700), 0 0 0 3px var(--cream), 0 8px 18px rgba(0, 0, 0, 0.3);
+}
+
+.scr-level[data-state='locked'] {
+  background: rgba(255, 244, 223, 0.1);
+  color: rgba(255, 244, 223, 0.6);
+  box-shadow: inset 0 0 0 2px rgba(255, 244, 223, 0.18);
+  opacity: 1;
+}
+
+/* «Новое блюдо» badge on the card of a level that introduces a dish. */
+.scr-level__new {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--cream-50);
+  box-shadow: 0 0 0 2px var(--gold), 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.levels-new {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 14px;
+  background: rgba(230, 182, 90, 0.14);
+  box-shadow: inset 0 0 0 1px rgba(230, 182, 90, 0.5);
+  color: var(--cream);
+  font-weight: 600;
+}
+
+.levels-new__icons {
+  display: inline-flex;
+  gap: 4px;
+  flex: none;
+}
+
+.levels-new__icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--cream);
+}
+
+.tutorial-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 8px;
+  padding: 0;
+  list-style: none;
+}
+
+.scr-tutorial {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 56px;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 16px;
+  background: rgba(255, 244, 223, 0.1);
+  color: var(--cream);
+  font-weight: 700;
+  text-align: left;
+  box-shadow: inset 0 0 0 1.5px rgba(230, 182, 90, 0.45);
+  touch-action: manipulation;
+}
+
+.scr-tutorial .ui-icon {
+  color: var(--gold);
+}
+
+.scr-tutorial__title {
+  flex: 1;
+  min-width: 0;
+}
+
+.scr-tutorial__seen {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--gold-300);
+}
+
+.scr-tutorial__seen .ui-icon {
+  color: inherit;
+}
+
+@media (hover: hover) {
+  .scr-level:hover:not(:disabled),
+  .scr-tutorial:hover {
+    filter: brightness(1.06);
+  }
+}
+
+/* ------------------------------------------------------------- settings */
+
+.settings-list {
+  display: grid;
+  gap: 10px;
+}
+
+.settings-status {
+  font-weight: 700;
+  color: var(--teal-600);
+}
+
+[data-reduced-motion='true'] .scr-level {
+  transition: none;
+}

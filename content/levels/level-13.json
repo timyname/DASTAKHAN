@@ -1,0 +1,30 @@
+{
+  "id": "level-13",
+  "version": 1,
+  "rulesVersion": 2,
+  "rows": 11,
+  "cols": 11,
+  "allowedTypes": ["baursak", "kazy", "zhent", "manty", "chakchak", "lagman"],
+  "moveLimit": 30,
+  "goals": [
+    { "kind": "clearCrumbs", "count": 16 }
+  ],
+  "overlays": [
+    { "row": 1, "col": 1, "hp": 2 },
+    { "row": 1, "col": 2, "hp": 2 },
+    { "row": 1, "col": 8, "hp": 2 },
+    { "row": 1, "col": 9, "hp": 2 },
+    { "row": 2, "col": 1, "hp": 2 },
+    { "row": 2, "col": 2, "hp": 2 },
+    { "row": 2, "col": 8, "hp": 2 },
+    { "row": 2, "col": 9, "hp": 2 },
+    { "row": 8, "col": 1, "hp": 2 },
+    { "row": 8, "col": 2, "hp": 2 },
+    { "row": 8, "col": 8, "hp": 2 },
+    { "row": 8, "col": 9, "hp": 2 },
+    { "row": 9, "col": 1, "hp": 2 },
+    { "row": 9, "col": 2, "hp": 2 },
+    { "row": 9, "col": 8, "hp": 2 },
+    { "row": 9, "col": 9, "hp": 2 }
+  ]
+}

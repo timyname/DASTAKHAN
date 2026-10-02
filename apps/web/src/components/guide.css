@@ -1,0 +1,152 @@
+/* «Комбинации» guide content (screen and in-game dialog). */
+
+.guide {
+  display: grid;
+  gap: 22px;
+  color: var(--ink);
+}
+
+.guide-section {
+  display: grid;
+  gap: 10px;
+}
+
+.guide-section__title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  line-height: 1.2;
+  color: var(--teal);
+  padding-bottom: 8px;
+  background: var(--ornament-diamonds-gold) left bottom / auto 8px repeat-x;
+}
+
+.guide-section__intro {
+  color: var(--ink-soft);
+}
+
+.guide-cards {
+  display: grid;
+  gap: 10px;
+  padding: 0;
+  list-style: none;
+}
+
+.guide-card {
+  display: grid;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  background: var(--surface-raised);
+  box-shadow: inset 0 0 0 1px rgba(20, 63, 58, 0.12);
+}
+
+.guide-card--gold {
+  background: linear-gradient(180deg, #fff6e2, #fbe9c4);
+  box-shadow: inset 0 0 0 2px rgba(230, 182, 90, 0.75);
+}
+
+.guide-card__visual {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px;
+  border-radius: 12px;
+  background: var(--board-surface);
+  color: var(--teal-600);
+}
+
+.guide-card__body {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.guide-card__text {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.guide-card__title {
+  font-size: 1.02rem;
+  line-height: 1.25;
+  color: var(--teal);
+}
+
+.guide-card p {
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.guide-tiles {
+  display: inline-flex;
+  gap: 3px;
+}
+
+.guide-tiles--vertical {
+  flex-direction: column;
+}
+
+.guide-lshape {
+  display: inline-grid;
+  gap: 2px;
+}
+
+.guide-arrow {
+  flex: none;
+  color: var(--terracotta);
+}
+
+.guide-plus {
+  font-size: 1.6rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--terracotta);
+}
+
+/* Effect scheme: 11×11 mini board. */
+.guide-scheme {
+  flex: none;
+  width: 76px;
+  height: 76px;
+}
+
+.guide-scheme__bg {
+  fill: var(--teal);
+}
+
+.guide-scheme__cell--0 {
+  fill: rgba(255, 244, 223, 0.2);
+}
+
+.guide-scheme__cell--1 {
+  fill: var(--gold);
+}
+
+.guide-scheme__cell--2 {
+  fill: var(--terracotta-300);
+  stroke: var(--cream);
+  stroke-width: 0.12;
+}
+
+@media (min-width: 720px) {
+  .guide-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Narrow dialogs and phones: keep text readable, shrink schemes a bit. */
+@media (max-width: 380px) {
+  .guide-card {
+    padding: 10px;
+  }
+
+  .guide-scheme {
+    width: 64px;
+    height: 64px;
+  }
+}

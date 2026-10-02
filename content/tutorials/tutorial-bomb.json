@@ -1,0 +1,45 @@
+{
+  "id": "tutorial-bomb",
+  "version": 1,
+  "rulesVersion": 2,
+  "titleKey": "tutorial.bomb.title",
+  "level": {
+    "id": "tutorial-bomb",
+    "version": 1,
+    "rulesVersion": 2,
+    "rows": 11,
+    "cols": 11,
+    "allowedTypes": ["baursak", "kurt", "kazy", "samsa", "zhent", "tea"],
+    "moveLimit": 5,
+    "goals": [
+      { "kind": "collect", "type": "kurt", "count": 5 }
+    ],
+    "overlays": [],
+    "tutorialId": "tutorial-bomb"
+  },
+  "board": [
+    "B. B. S. Z. K. S. Z. B. S. K. Z.",
+    "T. J. J. T. K. T. K. B. B. T. T.",
+    "J. J. K. S. Z. K. Z. K. K. B. S.",
+    "B. B. T. Z. J. Z. B. S. B. B. S.",
+    "T. Z. J. Z. Z. T. K. K. J. T. B.",
+    "B. B. Z. T. Z. T. K. S. B. J. T.",
+    "K. B. B. Z. S. Z. T. J. J. T. B.",
+    "B. S. J. T. T. J. J. S. J. S. K.",
+    "K. J. J. K. S. K. Z. T. K. T. B.",
+    "K. B. T. S. Kb K. B. B. K. T. S.",
+    "B. B. J. K. B. S. K. T. Z. J. Z."
+  ],
+  "seed": 1002,
+  "steps": [
+    {
+      "move": { "from": { "row": 2, "col": 4 }, "to": { "row": 3, "col": 4 } },
+      "textKey": "tutorial.bomb.step1"
+    },
+    {
+      "move": { "from": { "row": 10, "col": 6 }, "to": { "row": 9, "col": 6 } },
+      "textKey": "tutorial.bomb.step2"
+    }
+  ],
+  "doneTextKey": "tutorial.bomb.done"
+}

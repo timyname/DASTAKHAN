@@ -1,0 +1,14 @@
+{
+  "id": "level-10",
+  "version": 1,
+  "rulesVersion": 2,
+  "rows": 11,
+  "cols": 11,
+  "allowedTypes": ["kurt", "kazy", "samsa", "tea", "chakchak", "plov"],
+  "moveLimit": 28,
+  "goals": [
+    { "kind": "collect", "type": "kurt", "count": 35 },
+    { "kind": "collect", "type": "kazy", "count": 35 }
+  ],
+  "overlays": []
+}

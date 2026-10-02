@@ -1,0 +1,45 @@
+{
+  "id": "tutorial-besh",
+  "version": 1,
+  "rulesVersion": 2,
+  "titleKey": "tutorial.besh.title",
+  "level": {
+    "id": "tutorial-besh",
+    "version": 1,
+    "rulesVersion": 2,
+    "rows": 11,
+    "cols": 11,
+    "allowedTypes": ["kurt", "samsa", "shelpek", "chakchak", "plov", "lagman"],
+    "moveLimit": 5,
+    "goals": [
+      { "kind": "collect", "type": "shelpek", "count": 25 }
+    ],
+    "overlays": [],
+    "tutorialId": "tutorial-besh"
+  },
+  "board": [
+    "L. H. C. H. C. C. H. C. P. S. H.",
+    "H. H. C. P. H. C. P. S. H. H. K.",
+    "S. S. H. P. H. H. C. H. H. C. L.",
+    "H. C. P. C. C. H. L. L. S. C. H.",
+    "H. P. P. C. P. P. K. L. H. H. L.",
+    "K. H. H. L. C. C. H. K. H. H. L.",
+    "C. L. K. P. P. H. S. S. K. L. S.",
+    "H. H. P. P. L. S. P. P. S. P. H.",
+    "H. K. H. S. K. S. H. K. H. L. H.",
+    "K. H. K. H. H. C. H. H. XX H. K.",
+    "K. P. P. L. S. L. C. L. L. K. H."
+  ],
+  "seed": 1008,
+  "steps": [
+    {
+      "move": { "from": { "row": 5, "col": 4 }, "to": { "row": 5, "col": 3 } },
+      "textKey": "tutorial.besh.step1"
+    },
+    {
+      "move": { "from": { "row": 9, "col": 8 }, "to": { "row": 9, "col": 9 } },
+      "textKey": "tutorial.besh.step2"
+    }
+  ],
+  "doneTextKey": "tutorial.besh.done"
+}

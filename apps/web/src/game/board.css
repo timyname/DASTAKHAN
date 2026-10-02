@@ -1,0 +1,408 @@
+/* Board renderer. Only transform/opacity are animated on tiles. */
+
+.bd-board {
+  --bd-cell: calc(100% / 11);
+  --bd-cell-a: #fff4df;
+  --bd-cell-b: #f6e6c8;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--bd-cell-b);
+  /* Only the board blocks browser gestures; page zoom stays enabled elsewhere. */
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  container-type: inline-size;
+  outline: none;
+  box-shadow: inset 0 0 0 1px rgba(20, 63, 58, 0.15);
+}
+
+.bd-board:focus-visible {
+  box-shadow: 0 0 0 3px #e6b65a, inset 0 0 0 1px rgba(20, 63, 58, 0.15);
+}
+
+.bd-cells {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(11, 1fr);
+  grid-template-rows: repeat(11, 1fr);
+}
+
+.bd-cell {
+  position: relative;
+}
+
+.bd-cell-a {
+  background: var(--bd-cell-a);
+}
+
+.bd-cell-b {
+  background: var(--bd-cell-b);
+}
+
+.bd-crumbs {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.bd-tiles,
+.bd-markers {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.bd-tile {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--bd-cell);
+  height: var(--bd-cell);
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.45, 0.05, 0.6, 1);
+  will-change: transform;
+}
+
+.bd-tile-inner {
+  position: absolute;
+  inset: 4%;
+}
+
+.bd-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.bd-fx-removing .bd-tile-inner {
+  animation: bd-remove 160ms ease-in forwards;
+}
+
+.bd-fx-created .bd-tile-inner {
+  animation: bd-pop 260ms ease-out;
+}
+
+.bd-fx-converted .bd-tile-inner {
+  animation: bd-convert 220ms ease-out;
+}
+
+@keyframes bd-remove {
+  to {
+    transform: scale(0.25);
+    opacity: 0;
+  }
+}
+
+@keyframes bd-pop {
+  0% {
+    transform: scale(0.6);
+  }
+  60% {
+    transform: scale(1.18);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes bd-convert {
+  0% {
+    filter: brightness(1.8);
+    transform: scale(1.15);
+  }
+  100% {
+    filter: none;
+    transform: scale(1);
+  }
+}
+
+/* Markers */
+.bd-marker {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--bd-cell);
+  height: var(--bd-cell);
+  border-radius: 22%;
+  box-sizing: border-box;
+}
+
+.bd-marker-selected {
+  border: 3px solid #b75c46;
+  background: rgba(183, 92, 70, 0.16);
+  box-shadow: 0 0 0 2px #fff4df;
+}
+
+.bd-marker-cursor {
+  border: 2px dashed #143f3a;
+}
+
+/* The keyboard cursor is shown only while the board has keyboard focus. */
+.bd-board:not(:focus-visible) .bd-marker-cursor {
+  display: none;
+}
+
+.bd-marker-hint {
+  background: rgba(230, 182, 90, 0.45);
+  animation: bd-hint 1.1s ease-in-out infinite;
+}
+
+.bd-marker-guide {
+  background: rgba(230, 182, 90, 0.55);
+  border: 3px solid #e6b65a;
+  animation: bd-hint 0.9s ease-in-out infinite;
+}
+
+@keyframes bd-hint {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Effects layer — never intercepts input. */
+.bd-effects {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.bd-effects > * {
+  pointer-events: none;
+}
+
+.fx-band {
+  position: absolute;
+  animation-name: fx-band;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
+}
+
+.fx-band-h {
+  left: 0;
+  right: 0;
+  background: linear-gradient(180deg, transparent 10%, rgba(255, 226, 140, 0.95) 45%, rgba(255, 249, 225, 1) 50%, rgba(255, 226, 140, 0.95) 55%, transparent 90%);
+  --fx-axis: scaleX(0);
+}
+
+.fx-band-v {
+  top: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent 10%, rgba(255, 226, 140, 0.95) 45%, rgba(255, 249, 225, 1) 50%, rgba(255, 226, 140, 0.95) 55%, transparent 90%);
+  --fx-axis: scaleY(0);
+}
+
+@keyframes fx-band {
+  0% {
+    transform: var(--fx-axis);
+    opacity: 1;
+  }
+  55% {
+    transform: none;
+    opacity: 1;
+  }
+  100% {
+    transform: none;
+    opacity: 0;
+  }
+}
+
+.fx-area {
+  position: absolute;
+  border-radius: 24%;
+  background: radial-gradient(circle, rgba(255, 244, 200, 0.95) 0%, rgba(230, 182, 90, 0.75) 45%, rgba(183, 92, 70, 0.25) 75%, transparent 100%);
+  animation: fx-area ease-out forwards;
+}
+
+@keyframes fx-area {
+  0% {
+    transform: scale(0.3);
+    opacity: 0.2;
+  }
+  40% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+.fx-cell {
+  position: absolute;
+  border-radius: 25%;
+  background: rgba(230, 182, 90, 0.65);
+  animation: fx-cell ease-out forwards;
+}
+
+@keyframes fx-cell {
+  0% {
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.fx-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.fx-beam {
+  fill: none;
+  stroke: #ffd77a;
+  stroke-width: 0.12;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  filter: drop-shadow(0 0 0.15px #fff4df);
+  animation: fx-beam ease-out forwards;
+}
+
+@keyframes fx-beam {
+  0% {
+    stroke-dashoffset: 1;
+    opacity: 1;
+  }
+  60% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+}
+
+.fx-wave {
+  fill: none;
+  stroke: rgba(255, 226, 140, 0.9);
+  stroke-width: 0.2;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: fx-wave ease-out forwards;
+}
+
+@keyframes fx-wave {
+  0% {
+    transform: scale(0.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+
+.fx-ring {
+  position: absolute;
+  width: 20%;
+  aspect-ratio: 1;
+  margin: -10% 0 0 -10%;
+  border-radius: 50%;
+  border: 6px solid rgba(255, 215, 122, 0.95);
+  box-shadow: 0 0 24px rgba(255, 215, 122, 0.8), inset 0 0 18px rgba(255, 244, 223, 0.8);
+  animation: fx-ring ease-out forwards;
+}
+
+@keyframes fx-ring {
+  0% {
+    transform: scale(0.2);
+    opacity: 1;
+  }
+  80% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(8);
+    opacity: 0;
+  }
+}
+
+.fx-spark {
+  position: absolute;
+  width: 2.2%;
+  aspect-ratio: 1;
+  margin: -1.1% 0 0 -1.1%;
+  border-radius: 30%;
+  animation: fx-spark ease-out forwards;
+}
+
+.fx-spark-0 {
+  background: #ffd77a;
+}
+
+.fx-spark-1 {
+  background: #b75c46;
+}
+
+.fx-spark-2 {
+  background: #fff4df;
+}
+
+@keyframes fx-spark {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--dx), var(--dy)) rotate(260deg);
+    opacity: 0;
+  }
+}
+
+/* Reduced motion: no scale bounces or travelling effects; short highlights stay. */
+:root[data-reduced-motion='true'] .bd-fx-created .bd-tile-inner,
+:root[data-reduced-motion='true'] .bd-fx-converted .bd-tile-inner {
+  animation: none;
+}
+
+:root[data-reduced-motion='true'] .bd-fx-removing .bd-tile-inner {
+  animation: bd-fade 120ms linear forwards;
+}
+
+:root[data-reduced-motion='true'] .fx-area {
+  animation-name: fx-cell;
+}
+
+:root[data-reduced-motion='true'] .bd-marker-hint,
+:root[data-reduced-motion='true'] .bd-marker-guide {
+  animation: none;
+  opacity: 0.8;
+}
+
+@keyframes bd-fade {
+  to {
+    opacity: 0;
+  }
+}
+
+/* Tutorial hint line under the board. */
+.gp-tutorial-hint {
+  display: inline;
+}
+
+.gp-step {
+  font-weight: 700;
+  color: var(--gold, #e6b65a);
+  white-space: nowrap;
+}

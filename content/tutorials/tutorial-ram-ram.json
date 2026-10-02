@@ -1,0 +1,41 @@
+{
+  "id": "tutorial-ram-ram",
+  "version": 1,
+  "rulesVersion": 2,
+  "titleKey": "tutorial.ramRam.title",
+  "level": {
+    "id": "tutorial-ram-ram",
+    "version": 1,
+    "rulesVersion": 2,
+    "rows": 11,
+    "cols": 11,
+    "allowedTypes": ["baursak", "kurt", "kazy", "samsa", "zhent", "tea"],
+    "moveLimit": 4,
+    "goals": [
+      { "kind": "collect", "type": "tea", "count": 12 }
+    ],
+    "overlays": [],
+    "tutorialId": "tutorial-ram-ram"
+  },
+  "board": [
+    "K. K. B. S. J. B. S. S. K. Z. Z.",
+    "S. J. T. J. S. K. T. J. B. J. K.",
+    "B. Z. Z. S. B. B. K. T. J. S. K.",
+    "Z. K. J. S. Z. S. Z. T. K. S. S.",
+    "Z. J. K. T. S. K. S. K. K. B. J.",
+    "B. B. K. T. K. RR RR T. Z. S. S.",
+    "T. T. S. B. J. B. J. J. Z. S. S.",
+    "J. K. J. Z. B. T. J. S. J. B. K.",
+    "T. B. J. J. S. K. S. T. S. B. J.",
+    "B. S. Z. T. K. T. T. Z. S. K. T.",
+    "K. J. B. S. Z. K. K. Z. Z. K. Z."
+  ],
+  "seed": 1004,
+  "steps": [
+    {
+      "move": { "from": { "row": 5, "col": 5 }, "to": { "row": 5, "col": 6 } },
+      "textKey": "tutorial.ramRam.step1"
+    }
+  ],
+  "doneTextKey": "tutorial.ramRam.done"
+}

@@ -1,0 +1,37 @@
+{
+  "id": "level-07",
+  "version": 1,
+  "rulesVersion": 2,
+  "rows": 11,
+  "cols": 11,
+  "allowedTypes": ["baursak", "kurt", "samsa", "tea", "manty", "shelpek"],
+  "moveLimit": 26,
+  "goals": [
+    { "kind": "clearCrumbs", "count": 22 },
+    { "kind": "collect", "type": "baursak", "count": 25 }
+  ],
+  "overlays": [
+    { "row": 2, "col": 0, "hp": 1 },
+    { "row": 2, "col": 1, "hp": 1 },
+    { "row": 2, "col": 2, "hp": 1 },
+    { "row": 2, "col": 3, "hp": 1 },
+    { "row": 2, "col": 4, "hp": 1 },
+    { "row": 2, "col": 5, "hp": 1 },
+    { "row": 2, "col": 6, "hp": 1 },
+    { "row": 2, "col": 7, "hp": 1 },
+    { "row": 2, "col": 8, "hp": 1 },
+    { "row": 2, "col": 9, "hp": 1 },
+    { "row": 2, "col": 10, "hp": 1 },
+    { "row": 8, "col": 0, "hp": 1 },
+    { "row": 8, "col": 1, "hp": 1 },
+    { "row": 8, "col": 2, "hp": 1 },
+    { "row": 8, "col": 3, "hp": 1 },
+    { "row": 8, "col": 4, "hp": 1 },
+    { "row": 8, "col": 5, "hp": 1 },
+    { "row": 8, "col": 6, "hp": 1 },
+    { "row": 8, "col": 7, "hp": 1 },
+    { "row": 8, "col": 8, "hp": 1 },
+    { "row": 8, "col": 9, "hp": 1 },
+    { "row": 8, "col": 10, "hp": 1 }
+  ]
+}

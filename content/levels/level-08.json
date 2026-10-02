@@ -1,0 +1,23 @@
+{
+  "id": "level-08",
+  "version": 1,
+  "rulesVersion": 2,
+  "rows": 11,
+  "cols": 11,
+  "allowedTypes": ["kurt", "kazy", "samsa", "zhent", "tea", "chakchak"],
+  "moveLimit": 27,
+  "goals": [
+    { "kind": "clearCrumbs", "count": 9 }
+  ],
+  "overlays": [
+    { "row": 4, "col": 4, "hp": 2 },
+    { "row": 4, "col": 5, "hp": 2 },
+    { "row": 4, "col": 6, "hp": 2 },
+    { "row": 5, "col": 4, "hp": 2 },
+    { "row": 5, "col": 5, "hp": 2 },
+    { "row": 5, "col": 6, "hp": 2 },
+    { "row": 6, "col": 4, "hp": 2 },
+    { "row": 6, "col": 5, "hp": 2 },
+    { "row": 6, "col": 6, "hp": 2 }
+  ]
+}

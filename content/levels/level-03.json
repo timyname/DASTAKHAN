@@ -1,0 +1,13 @@
+{
+  "id": "level-03",
+  "version": 1,
+  "rulesVersion": 2,
+  "rows": 11,
+  "cols": 11,
+  "allowedTypes": ["baursak", "kurt", "kazy", "samsa", "zhent", "tea"],
+  "moveLimit": 24,
+  "goals": [
+    { "kind": "collect", "type": "samsa", "count": 30 }
+  ],
+  "overlays": []
+}
