@@ -1,0 +1,412 @@
+# DASTAKHAN — English Master Prompt Pack
+
+# DASTAKHAN — Shared Game Specification
+
+Version 1.1 — English model instructions, October 2, 2026.
+
+## Purpose and workflow
+
+This is a design proposal and development starter kit, not a completed game or validated level balance. All model-facing instructions are in English. The initial player-facing interface is Russian; preserve authentic food names and place future Kazakh translations in a separate dictionary for human review.
+
+Repository/project name: DASTAKHAN, exactly as requested by the owner. Russian display title: «Дастархан». Use DASTAKHAN consistently for paths, project identifiers and branding in English prompts.
+
+Read this specification before any individual prompt. Execute prompts 01–06 and 08 for the local MVP. Prompt 07 is a later backend stage. Prompt 09 orchestrates the complete local MVP. Work sequentially in one repository; do not create independent frontend, engine and backend projects with incompatible rules. Use frontend-design and webapp-testing skills when available, but verify that their required tools actually exist.
+
+## 1. Product and theme
+
+A single-player browser match-3 game inspired by a welcoming Kazakh feast. Warm, festive and contemporary. This is an artistic game interpretation, not an assertion about traditional serving rituals. No cultural caricatures or copied game characters/branding.
+
+The board is always 11 columns by 11 rows, with row/col coordinates 0–10. MVP boards are complete rectangles without holes. Gravity is downward; new pieces enter from the top. Mobile first, then desktop. No mandatory account, energy system, advertisements or payments in the MVP.
+
+## 2. Basic food pieces
+
+| ID | Russian player label | Required silhouette |
+| --- | --- | --- |
+| baursak | Баурсак | Golden inflated dough pillow, rounded diamond |
+| kurt | Курт | Three small ivory cheese balls in a compact triangular cluster |
+| kazy | Казы | Two overlapping burgundy oval sausage slices with prominent cream centers |
+| samsa | Самса | Amber triangular pastry with a bold folded seam |
+| zhent | Жент | Short ochre fluted cylinder, simplified coarse grain texture |
+| tea | Чай | Low turquoise handleless tea bowl, dark tea surface visible |
+
+Use six types for standard levels. Levels 1–2 use five, excluding zhent. Distinguish pieces by silhouette, not color alone. Do not recolor food unnaturally to solve readability problems. Zhent's molded shape is an artistic serving choice.
+
+Food types do not evolve into other food types. Matches use identical base types; larger matches create special pieces.
+
+## 3. Match rewards
+
+- Exactly 3 in a horizontal/vertical straight line: remove them; no special.
+- Exactly 4 horizontally: create LINE_H; clear its entire row when activated.
+- Exactly 4 vertically: create LINE_V; clear its entire column when activated.
+- A T or L formed by intersecting horizontal and vertical runs of at least 3, with a union of at least 5 cells: create BOMB, displayed as «Казан»; its effect is a centered 3×3 square.
+- A straight run of 5 or more: create RAM, displayed as «Золотой барашек»; it is a universal special without a baseType.
+- Diagonals, 2×2 squares and merely connected clusters are not matches. A run of 6+ creates one RAM, not multiple rewards.
+
+LINE_H, LINE_V and BOMB retain their food baseType and participate in future matches of that type. Lines use a ribbon and directional arrows over the food art. BOMB uses one cauldron image with a readable food badge. RAM is a friendly golden ram-head emblem with curled horns, not a realistic severed head or a dish depiction.
+
+Find maximal matching runs, then merge runs that intersect at actual cells. Do not merge components just because same-type pieces are adjacent. A connected matching component produces at most one special. Independent components resolve simultaneously and may each create one.
+
+Priority: RAM > BOMB > LINE > ordinary removal. Select the creation cell deterministically: swap destination if in the component; otherwise swap origin if in it; otherwise greatest row and then smallest col. Cascades always use the final fallback rule.
+
+A new special survives the wave that created it, is not activated during that wave, and is subject to gravity afterwards. Protection ends at the next wave. A matching component containing any existing special activates that special but does not create another special. This MVP restriction avoids ambiguous special multiplication.
+
+## 4. Activation and special pairs
+
+LINE/BOMB activate when included in a baseType match or hit by another special. Tapping a single special selects it; tapping does not activate it.
+
+RAM + ordinary food: always a legal adjacent swap. Consume RAM and remove every piece with the selected food baseType. Existing LINE/BOMB of that baseType activate too. Show golden arcs to targets followed by a soft wave.
+
+RAM hit by another effect: select the most frequent baseType when its activation is enqueued. Tie-break order: baursak, kurt, kazy, samsa, zhent, tea. If no baseType exists, remove RAM without a secondary effect.
+
+Any two adjacent specials can be swapped for one move, even without a match. The pair effect replaces the individual activations of those two specials. Its center is the swap destination after the swap. Third-party specials hit by the pair effect chain normally, except the explicit RAM+RAM override below.
+
+| Pair | Exact effect |
+| --- | --- |
+| LINE + LINE, any orientations | One row plus one column through the center: 21 unique cells on the full board |
+| LINE + BOMB | Three adjacent rows plus three adjacent columns through the center: up to 57 unique cells |
+| BOMB + BOMB | One centered 5×5 square: up to 25 cells; one damage wave, no delayed second blast |
+| RAM + LINE | Capture the line's baseType and orientation. Convert every ordinary piece of that type in the board snapshot to that LINE orientation and activate them. Consume the initial pair. Existing specials of that baseType are enqueued with their original kind unchanged. Others activate only if hit. |
+| RAM + BOMB | Same snapshot/conversion behavior, converting ordinary pieces of that baseType to BOMB. Existing specials retain their kinds. |
+| RAM + RAM | «Большой той»: one board-wide effect removes every current piece and deals one hit to each obstacle layer. Other specials are absorbed without individual activation. Refill and evaluate goals normally; this is not automatic victory. |
+
+Clip all areas at board edges; never wrap. Two RAM pieces must be adjacent and swapped; they do not combine remotely. Highlight an available RAM pair and teach this explicitly.
+
+## 5. Resolution, scoring and determinism
+
+State flow: idle → swapping → resolving → falling → refilling → checking → idle/won/lost. Accept gameplay input only in idle. Pause/exit must remain safely accessible.
+
+An illegal swap animates forward and back, consumes no move, does not advance RNG and changes neither score nor goals. A legal swap consumes exactly one move, locks input, resolves effects, applies gravity/refill and continues cascades until stable.
+
+Per wave: detect matches and protected special spawn cells; resolve the queue of existing specials; union affected cells; apply removal/damage once; then gravity/refill. Stable activation queue ordering: row, col, tileId. Each existing special activates at most once per wave. Overlapping effects do not double-count damage, collection or points.
+
+RAM conversions use the pre-removal board snapshot. Converted entities receive deterministic IDs linked to the originals and cannot be processed twice. Event iteration order must not alter results.
+
+Collect a baseType goal when an ordinary piece or LINE/BOMB of that baseType is actually removed. RAM has no baseType. The piece retained as a newly created special is not collected/scored until the special is eventually removed.
+
+Base score: 10 per removed piece, including RAM; 20 per fully destroyed obstacle. Partial obstacle damage has no score. Creating a special gives no extra points. Wave multipliers are ×1, ×2, ×3, ×4, then capped at ×5. All chained blasts before the next gravity step belong to one wave. Each player move resets the multiplier.
+
+Stars are awarded only on victory: 1 for all goals completed, 2 if at least 20% of starting moves remain, 3 if at least 40% remain. Apply the highest eligible tier. No automatic remaining-move celebration blasts in MVP.
+
+Fully resolve the last move and all cascades, then check victory before defeat. A last-move win earns one star if no moves remain. Defeat requires incomplete goals and zero moves.
+
+Use seeded RNG, versioned rules and versioned levels. No Date.now or Math.random in game-core. Tile IDs use a deterministic counter. Bound generation/shuffle attempts and cascades per move with constants recorded in rules. On overflow, surface a technical error and restore the last stable state, rather than silently awarding a win or consuming a move.
+
+## 6. MVP obstacles
+
+Only «Крошки на скатерти» (crumbs): stationary under-tile layers with 1 or 2 HP. They do not block swaps, matches or gravity. A wave removing a tile at that cell or directly affecting the cell deals at most 1 damage to its layer. HP2 is visually denser than HP1. Layers never fall with pieces.
+
+A protected newly created special's cell takes no obstacle damage merely from its generating match; an independent blast can damage the layer without destroying the protected special. RAM+RAM removes one HP everywhere, so HP2 layers require another hit.
+
+Do not add generators, ice, locked cells, portals, diagonal gravity or falling ingredients before validating the base game.
+
+## 7. Board generation and dead boards
+
+Every starting board must have no pre-existing match and at least one legal move. Select uniformly from allowed types; no hidden adaptation to the player's actions.
+
+A legal move is an ordinary match-producing swap, RAM with food/another special, or a swap of two specials.
+
+After stabilization, if no legal move exists and the game is unfinished, shuffle free of charge. Preserve piece types and specials; preserve obstacle positions/HP. Require no ready matches and at least one legal move. After bounded shuffle attempts, deterministically regenerate ordinary pieces while retaining specials and layers; log a fallback event. Never lose objective progress.
+
+After 5 idle seconds, highlight one legal swap as a hint. Do not claim the hint is optimal.
+
+## 8. Architecture and persistence
+
+Suggested MVP stack: TypeScript, Vite, React for screens, an isolated DOM renderer with transform animations, Vitest for core tests, Playwright for browser testing. Choose compatible current stable versions and commit the lockfile; do not invent version numbers.
+
+Start with 121 DOM pieces, without WebGL or a game engine. If profiling reveals a real renderer bottleneck, replace the renderer behind the shared interface without rewriting game rules.
+
+- packages/game-core: pure logic, types, seeded RNG, rulesVersion and events.
+- apps/web: screens, rendering, input, audio and local progress.
+- apps/api: optional later Node.js/TypeScript + PostgreSQL backend.
+- content/levels: schema-validated JSON definitions.
+- public/assets: images/audio and a typed manifest.
+- docs: specifications, status and run instructions.
+
+Share the exact game-core package between browser and server replays.
+
+Core API: createGame(level, seed), getLegalMoves(state), applyMove(state, move), serializeState(state), restoreState(snapshot). applyMove returns nextState and ordered visual events sufficient to reconstruct intermediate scenes, not just the final array. No DOM, React, network, animation timers or storage access inside game-core.
+
+Saves include schemaVersion, rulesVersion, levelVersion, levelId, seed, rngState, last stable state, move log, objectives and moves remaining. Save only stable states; hiding the tab mid-animation preserves the last stable state.
+
+## 9. First 15 levels: provisional balance
+
+Every board is 11×11. Multiple goals must all be completed. Campaign boards start without specials; tutorials use separate fixtures.
+
+| Level | Types | Moves | Goals / layers |
+| --- | --- | --- | --- |
+| 01 | 5, no zhent | 20 | Collect 25 baursak |
+| 02 | 5, no zhent | 22 | Collect 20 kurt and 20 kazy |
+| 03 | 6 | 24 | Collect 30 samsa |
+| 04 | 6 | 25 | Collect 25 tea and 25 zhent |
+| 05 | 6 | 25 | Clear 9 HP1 cells: rows 4–6, cols 4–6 |
+| 06 | 6 | 26 | Clear 25 HP1 cells: rows 3–7, cols 3–7 |
+| 07 | 6 | 26 | Clear 22 HP1 cells: rows 2 and 8, all cols; collect 25 baursak |
+| 08 | 6 | 27 | Clear 9 HP2 cells: rows 4–6, cols 4–6 |
+| 09 | 6 | 28 | Clear 21 HP1 cells: row 5 OR col 5 |
+| 10 | 6 | 28 | Collect 35 kurt and 35 kazy |
+| 11 | 6 | 29 | Clear 25 cells in rows 3–7, cols 3–7; central rows 4–6/cols 4–6 are HP2, remaining cells HP1 |
+| 12 | 6 | 30 | Clear 40 HP1 cells on the board's outside perimeter |
+| 13 | 6 | 30 | Clear 16 HP2 cells: four 2×2 blocks starting at (1,1), (1,8), (8,1), (8,8) |
+| 14 | 6 | 30 | Collect 25 of each of the six food types |
+| 15 | 6 | 32 | Clear 25 central HP2 cells, rows 3–7/cols 3–7; collect 40 tea |
+
+Levels 1–2 introduce swaps. After 2, offer a fixed LINE tutorial; after 4, BOMB; after 7, RAM; after 10, RAM+RAM. Tutorials do not rely on lucky random generation, do not spend campaign progress, can be skipped and replayed.
+
+Do not call levels balanced until simulation and human playtesting have been performed.
+
+## Technical references
+
+- Official Anthropic skills: https://github.com/anthropics/skills
+- Vite: https://vite.dev/guide/
+- React with TypeScript: https://react.dev/learn/typescript
+- Playwright device emulation: https://playwright.dev/docs/emulation
+
+Consult documentation for the actual installed versions. Templates and skills do not prove that game mechanics work.
+
+
+# Master Prompt 01 — Project Lead and Scaffold
+
+You are the lead developer of DASTAKHAN. Read docs/GAME_SPEC.md and treat it as the canonical rules contract. Build a working project, not merely a plan or mockup.
+
+Inspect the repository and its instructions first. Retain useful existing work. Establish the specified structure, docs/ASSET_SPEC.md and docs/STATUS.md. Do not duplicate the canonical rules into conflicting documents.
+
+Begin with a self-contained local vertical slice: 11×11 board, six food types, one level, deterministic core, SVG placeholder art, score/moves, win/lose and restart. Define LINE_H, LINE_V, BOMB, RAM, level schemas and the ordered event stream immediately. Add no backend before the core works.
+
+Provide dev, build, typecheck, test and test:e2e commands. Verify the installed environment and dependency compatibility; commit the lockfile. Never claim a command passed unless you ran it.
+
+Continue into prompt 02 after scaffolding. Work until the vertical slice is runnable. Make small reviewable commits where the repository workflow permits. Do not modify agreed rules merely to simplify implementation.
+
+If image generation is unavailable, use complete SVG fallbacks and the manifest. Do not block gameplay on art. If browser tests are unavailable, record that explicitly.
+
+Deliver source code, actual run instructions, checks truly performed and concrete remaining tasks. A static screenshot does not count as a game.
+
+
+# Master Prompt 02 — Mechanics and Special Combinations
+
+You are a match-3 engine developer. Implement packages/game-core exactly according to docs/GAME_SPEC.md. Inspect existing types and code; do not build a second competing core.
+
+The same rules version, level JSON, seed and move sequence must produce identical state, score, goals, RNG state and events in browser and server.
+
+Separate: maximal-run detection; intersecting-run components; classification; spawn-cell selection; swap validation; special activation queue; affected-cell union; layer damage; score/goals; gravity; refill; legal move search; shuffle; terminal-state evaluation.
+
+Implement all six special-pair combinations, including RAM+RAM absorbing other specials atomically. Clearly separate pre-effect snapshots, affected-cell sets and visual event order.
+
+Events: swap, swapRejected, matched, specialCreated, specialActivated, tilesConverted, cellsHit, obstacleDamaged, tilesRemoved, tilesFell, tilesSpawned, cascadeStarted, shuffled, goalsUpdated, gameWon, gameLost, technicalError. Include stable IDs, wave numbers, positions and payloads sufficient for the renderer. No game rules inside animation callbacks.
+
+Use hand-crafted fixtures for rare situations rather than hoping random seeds produce them.
+
+Required tests:
+- Horizontal/vertical runs of 3, 4, 5 and 6; diagonals and 2×2 squares rejected.
+- L/T, intersection with a run of 5, and RAM priority.
+- Independent components and deterministic special placement.
+- Matches containing existing specials create no new special.
+- Valid/invalid swaps; rejected swaps do not advance RNG.
+- Every individual activation and all six special pairs.
+- Full rows/columns; central cross 21, wide cross 57, square 25; edge clipping.
+- Overlapping blasts without duplicate score, collection or cyclic activation.
+- RAM hit by another blast and deterministic baseType tie-breaking.
+- RAM+RAM removes every piece but only one HP per layer.
+- Cascades, gravity and stationary layers.
+- Last-move victory checked before defeat.
+- Shuffle preserves specials/layers and consumes no move.
+- Serialization/restoration and replay yield identical canonical JSON.
+- Random move sequences preserve invariants: 121 occupied cells after stabilization, unique tile IDs, nonnegative moves/HP, no unresolved matches in idle.
+
+Do not substitute UI snapshots for mechanic tests. Report covered rules, actual commands and results. Resolve inconsistencies through the shared contract, not silent rule changes.
+
+
+# Master Prompt 03 — Frontend, Mobile Input and Animation
+
+You are the frontend/game UI developer. Use frontend-design if available. Build DASTAKHAN on the existing game-core. The UI must not independently calculate matches, score or victory.
+
+Art direction: appetizing dimensional casual-game food, dark teal #143F3A, cream #FFF4DF, gold #E6B65A, terracotta #B75C46. Restrained Kazakh ornamental accents on frame/background; calm surfaces behind pieces. Original branding and characters. Avoid a corporate-dashboard appearance.
+
+Screens: start; 15-level selection; gameplay; pause/settings; win; lose; combination guide; separate tutorial scenes. Defeat offers replay, not purchased moves. Settings: sound, music if available, reduced motion. Win shows stars, goals and next level. Player-facing copy is Russian, model-facing documentation English.
+
+Mobile layout:
+- Compact upper HUD: back/pause, level, moves remaining.
+- Objective icons and remaining counts; score is secondary.
+- Square 11×11 board uses nearly all available width.
+- Short hint/combo label and help below.
+- Safe-area insets, 100dvh, no horizontal overflow or browser-chrome overlap.
+- On short screens reduce decoration before compromising board visibility.
+- Desktop: centered board with reasonable maximum size and side goals/help.
+
+At 390px viewport and 16px total side margins, board width is about 374px and cell pitch about 34px. Do not promise 44px for each of 11 cells. Support both swipe and tap-first/tap-neighbor, strong selection and cancellation. Outside-board controls must have at least 44×44 CSS px targets. Avoid large cell gaps; evaluate real touch accuracy on narrow phones.
+
+Use Pointer Events and pointer capture. Swipe threshold: 0.25 cell pitch. Dominant axis selects direction; one gesture produces one swap. Ignore additional pointers. Set touch-action:none only on the board; do not globally disable page zoom.
+
+Keyboard: arrows move focus, Enter selects/swaps, Escape cancels. Make objective summaries accessible without announcing 121 changes individually.
+
+Renderer maintains the visual scene and plays core events. Tile IDs remain stable through falls. Avoid recreating all pieces each frame; animate transform/opacity and put particles on a separate layer. Never show the final board before intermediate events have played.
+
+Configurable timings: swap 140ms, rejection return 140ms, removal 160ms, fall 90ms + 25ms per cell capped at 280ms, LINE sweep 240ms, BOMB 280ms, RAM beams 450ms, RAM+RAM 700ms. Parallelize effects within a wave rather than serially waiting through dozens of blasts.
+
+LINE emits golden trails in both directions along the full affected row/column. BOMB has a warm rounded flash but the actual affected area stays 3×3. RAM+RAM brings emblems together, expands a golden ring across the board and turns pieces into sparks/confetti. No gore/aggression. Reduced motion removes shakes/traveling particles and retains short highlights. Avoid frequent bright flashes.
+
+Enable audio only after user interaction; support mute and pausing when hidden. If sound files do not exist, implement brief Web Audio synthesized sounds and disclose that choice.
+
+Check 360×800, 390×844, 430×932, 768×1024, 1440×900 and short landscape. Smooth phone performance is the goal; do not claim measured 60fps without measurement.
+
+Deliver functional screens and controls. Capture real screenshots and inspect clipping, overlap and console errors. Browser emulation is not a physical iPhone test.
+
+
+# Master Prompt 04 — Art Direction and Image Generation
+
+You are the art director of DASTAKHAN. Read docs/GAME_SPEC.md. Produce one coherent asset family, not unrelated images. Start with a six-piece style reference, then separately exportable sprites. A contact sheet does not replace individual game files.
+
+Use an image-generation tool if available. Otherwise supply prompts plus consistent SVG fallbacks and state that raster generation was not performed. Maintain an asset manifest with paths, dimensions, transparency and provenance. Preserve the IDs/filenames below.
+
+Sprites: 1024×1024 source; delivered 256×256 PNG or WebP with real alpha. Never fake transparency with a checkerboard. Artwork fills 72–80% of the canvas. Consistent camera, light direction and optical scale. Pieces must remain distinguishable at 28–34px; simplify detail instead of oversharpening.
+
+LINE overlays are implemented in code, avoiding 12 duplicate food sprites. BOMB uses one cauldron plus a programmatic baseType badge. RAM is a standalone emblem. Keep backgrounds separate and free of baked-in HUD/text. Implement text, buttons, logos and ornamental frames in HTML/SVG.
+
+Inspect real alpha, dimensions, unclipped shadows, consistent scale and readability on light/dark cells. Do not call a sprite atlas complete until technically assembled from individual assets.
+
+## Shared prefix for EVERY food/special sprite
+
+Create ONE isolated production game sprite for an original Kazakh food match-3 game called DASTAKHAN. Soft dimensional casual-game illustration, handcrafted clay-like volume, appetizing food, clean bold silhouette, restrained texture, rounded edges, warm key light from upper left, subtle ambient occlusion, fixed three-quarter top-down camera at roughly 30 degrees. Centered object filling 76 percent of a square canvas with generous transparent padding. Recognizable at 32 pixels. The same visual family and camera as the attached approved reference. TRUE transparent alpha background. No text, no letters, no numbers, no watermark, no tile frame, no checkerboard, no extra props, no cropped edges. Original design, not an imitation of an existing game's assets. Deliver a single sprite, not a grid or contact sheet.
+
+Append exactly ONE of the following asset descriptions to the prefix:
+
+food-baursak.png:
+A single golden Kazakh baursak, a plump fried dough pillow with a rounded diamond silhouette, gently inflated center, warm honey-gold crust, two or three broad surface dimples. No plate. Clearly different from a triangular samsa.
+
+food-kurt.png:
+Three small ivory-white Kazakh kurt cheese balls arranged as one compact triangular cluster, lightly chalky matte surfaces with extremely subtle pores. Clear three-lobed silhouette, soft cool shadows to remain visible against a cream board. No bowl or plate.
+
+food-kazy.png:
+Two overlapping thick oval slices of Kazakh kazy sausage, burgundy-brown outer meat ring and a large irregular cream-colored fat center, stylized appetizing cooked deli-food appearance, no blood, no raw meat, no plate. Clear oval silhouette with a diagonal arrangement.
+
+food-samsa.png:
+One triangular baked samsa pastry, rounded triangular corners, amber flaky crust, one bold folded seam and only a few broad sesame marks. Strong triangular silhouette, visibly flatter and more triangular than a baursak. No plate.
+
+food-zhent.png:
+One stylized molded portion of Kazakh zhent, a short ochre-gold cylinder with broad vertical fluting and a coarse millet crumb surface simplified into a few large readable marks. Flat top, compact scalloped cylinder silhouette, no frosting, no chocolate, no plate. Treat the molded shape as an artistic serving choice.
+
+food-tea.png:
+A single small turquoise Kazakh tea piala without a handle, broad low bowl with a clearly visible dark amber tea surface, one simple gold ornament accent. Compact bowl silhouette, no saucer, no steam obscuring its outline, no text.
+
+special-kazan.png:
+A tiny festive dark teal kazan cauldron with two short side handles, a thick gold rim and a warm glowing center. Friendly magical cooking-pot power-up, clearly round silhouette. No fuse, no realistic explosive device, no food icon badge baked into the art; leave center clean for a programmatic badge.
+
+special-ram.png:
+A friendly golden ram-head emblem as a magical game power-up. Symmetrical curled horns, a warm ivory face, gentle confident expression, teal ornamental accents, large readable horn silhouette. A decorative mascot symbol, not cooked food, not a severed anatomical head, no neck stump, no gore, no aggression. No plaque, no text, no background.
+
+obstacle-crumbs.png:
+A sparse low flat cluster of warm beige pastry crumbs, 5 to 7 simplified tiny irregular pieces, top-down readable overlay for one board cell. Empty space between crumbs, no plate, no food item, no border. Keep contrast low enough that a food sprite can remain readable above it.
+
+## Gameplay background — separate prompt
+
+Create an original vertical mobile game background for DASTAKHAN, a warm Kazakh food puzzle game. 9:16 portrait composition. A refined dark teal textile tabletop with subtle warm cream and gold ornamental details near the outer edges only, soft warm lighting, understated depth, inviting atmosphere. Keep the central 75 percent extremely calm and low contrast to place an 11 by 11 puzzle board and HUD over it. No game board, no food pieces, no buttons, no text, no logo, no people, no watermark. Decorative illustration, not a screenshot. Opaque background, high quality, 1080 by 1920 or nearest supported portrait size.
+
+## Full-screen style reference — not a working UI
+
+Design a high-fidelity portrait mobile game screen concept for an original Kazakh food match-3 game, DASTAKHAN. Warm premium casual-game art, dark teal and cream palette, restrained gold ornament, friendly dimensional food sprites: baursak dough pillows, white kurt cheese clusters, burgundy kazy slices, triangular samsa, golden zhent cylinders and turquoise tea bowls. A large square ELEVEN-column by ELEVEN-row board dominates the screen, compact goals and remaining-moves HUD above, small pause and help controls. Show a golden ram-head special tile and a cauldron bonus. Food is clearly readable and the screen is uncluttered. Avoid copied branding and excessive decorative frames. This is an art direction reference; exact grid count, readable text and interactions will be implemented in code and must not be inferred as correct from the generated image.
+
+A generated reference may contain the wrong cell count. Code must create exactly 121 cells. Verify actual image dimensions/transparency rather than assuming prompt compliance.
+
+
+# Master Prompt 05 — Asset Integration and Polish
+
+You are the technical artist/frontend developer. Integrate prompt 04 assets into the working game without changing rules or the 11×11 board.
+
+Create a typed manifest mapping food types to paths, fallbacks and accessible labels, and special types to base images plus overlays. Verify every file, alpha and dimensions. Preload necessary images only; handle loading/error states with playable fallbacks. Serve assets from the same origin, not temporary generator links.
+
+First build a technical gallery of six foods and the three special families at 32, 48 and 96 CSS px on actual board cells. Correct optical scale and confusing silhouettes. Direction and baseType must be readable without hover.
+
+LINE_H/LINE_V use overlays. BOMB includes a contrasting food badge; RAM has none. Visual arrows must match real effect direction.
+
+Implement particles/effects in code. Particle layers must not intercept input. Cap particle counts and minimize them under reduced motion. Effect visuals must correspond to actual affected cells.
+
+Optimize delivered art while preserving original sources separately. Report actual initial load size and measured bottlenecks. One background is enough; do not preload 15 large backgrounds or heavy music.
+
+Recheck ordinary swaps, chain reactions, RAM+RAM, restart and progress restoration after integration.
+
+
+# Master Prompt 06 — Levels, Tutorials and Editor
+
+You are the game designer/content developer. Implement the 15 initial definitions exactly as specified in docs/GAME_SPEC.md. Validate JSON with one shared schema used by runtime, editor and later backend.
+
+LevelDefinition fields: id, version, rulesVersion, rows=11, cols=11, allowedTypes, moveLimit, goals, overlays[{row,col,hp}], optional tutorialId. Seed is a run input, not a disguised arbitrary board.
+
+MVP goal types: collect(type,count), clearCrumbs(cellCount). HP2 cells count only when fully destroyed. Do not confuse obstacle cell count with total HP.
+
+Create four independent fixed tutorials: LINE, BOMB, RAM+food, RAM+RAM. Fixtures define a complete verified board and expected action/outcome. Do not promise rewards that random generation may not provide.
+
+Internal editor: 11×11 grid, HP0/1/2 brush, allowed-type toggles, move limit, goals, validation, test play using a seed, JSON import/export. Enable only in development or protected admin environments; never expose unrestricted server-level editing to public visitors.
+
+Simulate levels over a fixed seed set with a simple bot preferring objectives, specials and immediate collection. Record number of runs, bot version, win rate, median remaining moves and shuffle frequency. Bot results are technical signals, not predictions of human success rates.
+
+Retain initial definitions as v1. Version any balance changes and compare outcomes; never mutate an already-published level under the same version. Propose adjustments after human playtesting. Do not make unsupported retention/monetization claims.
+
+
+# Master Prompt 07 — Backend, Cloud Progress and Verified Results
+
+You are the backend developer. Add this second-stage service only after a working local DASTAKHAN MVP. Preserve offline/local play. Reuse game-core; never implement a separate server match algorithm. The service supports cross-device progress and verified runs, not animation frames.
+
+Suggested stack: Node.js/TypeScript, PostgreSQL and a simple HTTP API. Choose one minimal maintained server framework after checking compatibility. Do not introduce Redis, queues or microservices without a measured need.
+
+Guests can play immediately. Use one secure identity provider supported by the environment for cloud saves. Do not invent credentials or build custom password storage for MVP. Without configured authentication, preserve an honest local mode, not fake successful login.
+
+Entities:
+- players: identity derived from a verified session.
+- level_versions: immutable JSON, hash and rules version.
+- game_runs: playerId, runId, levelVersion, rulesVersion, serverSeed, issuedAt, expiresAt, status.
+- run_results: canonical replay outcome, score, stars, goals, remainingMoves, movesHash.
+- player_progress: bestStars/bestScore by level, unlockedLevel, revision.
+- Optional minimal gameplay analytics without unnecessary personal data.
+
+Endpoints:
+- GET /api/levels: published definitions and versions.
+- POST /api/runs: issue a run for an unlocked level, with server seed and versions.
+- POST /api/runs/:id/finish: accept a move log, run binding and idempotency key; distrust clientScore/clientWon.
+- GET /api/progress: current user's progress.
+- POST /api/progress/import: validate local move logs, marking offline imports unverified for leaderboards.
+- GET /api/leaderboard?levelId=...: only if enabled, using verified server-issued runs.
+
+On finish, verify run ownership, expiry/version, request size and move count; replay canonically from serverSeed; reject moves after termination; calculate results using shared core. Save result/progress in one DB transaction. Retrying identical finish returns the same result; conflicting payload for an already finished run returns conflict. Unique DB constraints protect races.
+
+Never replace the server-issued seed/rulesVersion with client claims. Retain replay support for supported older rules; return an explicit error for unsupported versions instead of silently changing the rules.
+
+Leaderboards have no monetary prizes. Replay confirms legal moves but does not distinguish humans from bots or prevent seed analysis. Do not describe it as complete anti-cheat.
+
+Merge cloud stars/best scores by max from verified records; compute unlocking on the server. Keep locally imported progress separate from verified rankings. Server-only secrets, ownership checks on every endpoint, rate limits, body limits, secure cookies/CSRF if cookie auth is used, and exact-origin CORS allowlists if origins differ.
+
+Test: foreign runs, altered scores/seeds, invalid moves, expired runs, repeated/concurrent finish, changed level versions, offline import, missing credentials and DB failures without partial writes.
+
+Deliver migrations, API contract, secret-free env.example, run instructions and actual integration-test results. Never implement an API that merely returns success without persistence/validation.
+
+
+# Master Prompt 08 — QA and Release Readiness
+
+You are DASTAKHAN's QA engineer. Use webapp-testing if available. Test the running game against docs/GAME_SPEC.md; do not alter rules to make tests pass.
+
+Check clean installation, typecheck, unit tests, build, serving the build and actual browser flows. Clearly mark unavailable checks instead of claiming success.
+
+Required E2E flows: new game; both touch input modes; invalid swap; LINE; BOMB; RAM+food; every special pair; last-move win; loss; restart; hint; dead-board shuffle; save/reload; tab hiding mid-cascade; mute; reduced motion; failed image loading.
+
+Use fixtures available only in test/development. Do not ship public endpoints that grant arbitrary bonuses or wins.
+
+Check all frontend viewport sizes and Chromium/WebKit where available. Capture real key-screen screenshots and reproducible defects. Device emulation does not replace physical iPhone testing; list the remaining short manual-device checklist.
+
+Check double-input prevention during rapid swipes/animations, RAM+RAM hangs, duplicate score, falling obstacle layers and silent save loss. Handle outdated save versions/corrupted JSON explicitly, preserving recoverable progress.
+
+Tests should protect rules and real user behavior rather than mirror code. Report passed, failed, untested and blocking defects separately. Claim release readiness only after blockers are resolved.
+
+
+# Master Prompt 09 — Build the Entire Local MVP
+
+Build the complete DASTAKHAN browser game from this repository. Read docs/GAME_SPEC.md in full; its contract overrides assumptions about generic match-3 behavior.
+
+Deliver working source and a runnable game: 11×11 board, six Kazakh food pieces, LINE from 4, BOMB from L/T, golden RAM from straight 5+, all six special-pair combinations, RAM+RAM board clear, 15 levels, fixed tutorials, local saves, mobile swipe and tap-swap, optional sound with mute, menus and combination guide.
+
+Execute prompts 01–06 and 08 sequentially. Continue between ordinary implementation stages without stopping at a plan. Keep docs/STATUS.md current and verify results. If an external capability is unavailable, use the specified honest working fallback and continue all unblocked work.
+
+Order: engine and tests, gameplay UI, assets/animations, levels/editor, full QA. Do not substitute a generated image for working game code. Do not invent rules, APIs, credentials or test outcomes. Do not implement prompt 07 backend in this local MVP; provide a ProgressRepository boundary for later integration.
+
+Use frontend-design and webapp-testing if present. Follow prompt 04 for art; if image generation is unavailable, implement complete SVG fallbacks and disclose them. The game must work without a server or unavailable image.
+
+Keep model-facing instructions/documentation in English. Player-facing UI stays Russian, with authentic food labels. Add translation dictionaries rather than mixing language decisions into engine logic.
+
+At completion provide actual run/build commands, a preview if the environment supports it, completed checks, limitations and updated docs/STATUS.md. If hosting is unconfigured, deliver a local command and build output; do not fabricate a public URL.
