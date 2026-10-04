@@ -28,6 +28,8 @@ export interface ModalProps {
 export function Modal({ title, children, actions, onClose, showClose, wide, className, actionsInRow, testId }: ModalProps) {
   const ref = useRef<HTMLDialogElement>(null);
   const titleId = `${useId()}-title`;
+  const suppressHandleClick = useRef(false);
+  const drag = useRef<{ pointerId: number; startY: number; lastY: number; time: number } | null>(null);
   const onCloseRef = useRef(onClose);
 
   useEffect(() => {
@@ -96,7 +98,39 @@ export function Modal({ title, children, actions, onClose, showClose, wide, clas
 
   return (
     <dialog ref={ref} className={classes.join(' ')} aria-labelledby={titleId} data-testid={testId}>
-      <div className="ui-modal__ornament" aria-hidden="true" />
+      {onClose ? (
+        <button className="ui-modal__drag" aria-label={t('common.close')} onClick={() => { if (suppressHandleClick.current) { suppressHandleClick.current = false; return; } onClose(); }}
+          onPointerDown={(e) => {
+            if (!e.isPrimary || e.button !== 0) return;
+            suppressHandleClick.current = false;
+            e.currentTarget.setPointerCapture(e.pointerId);
+            drag.current = { pointerId: e.pointerId, startY: e.clientY, lastY: e.clientY, time: e.timeStamp };
+            if (ref.current) { ref.current.style.animation = 'none'; ref.current.style.transition = 'none'; }
+          }}
+          onPointerMove={(e) => {
+            if (!drag.current || drag.current.pointerId !== e.pointerId || !ref.current) return;
+            drag.current.lastY = e.clientY;
+            ref.current.style.transform = `translateY(${Math.max(0, e.clientY - drag.current.startY)}px)`;
+          }}
+          onPointerUp={(e) => {
+            const d = drag.current;
+            if (!d || d.pointerId !== e.pointerId || !ref.current) return;
+            drag.current = null;
+            const distance = e.clientY - d.startY;
+            const velocity = distance / Math.max(1, e.timeStamp - d.time);
+            if (distance > 90 || (distance > 30 && velocity > .5)) { onClose(); return; }
+            ref.current.style.transition = 'transform 240ms cubic-bezier(.2,.8,.2,1)';
+            ref.current.style.transform = 'translateY(0)';
+            // Do not dismiss on click synthesized after a cancelled drag.
+            suppressHandleClick.current = Math.abs(distance) > 6;
+          }}
+          onPointerCancel={() => {
+            drag.current = null;
+            if (ref.current) { ref.current.style.transition = 'transform 180ms ease-out'; ref.current.style.transform = 'translateY(0)'; }
+          }}>
+          <span className="ui-modal__ornament" style={{ display: 'block' }} />
+        </button>
+      ) : <div className="ui-modal__ornament" aria-hidden="true" />}
       <div className={withClose ? 'ui-modal__header ui-modal__header--with-close' : 'ui-modal__header'}>
         <h2 id={titleId} className="ui-modal__title">
           {title}

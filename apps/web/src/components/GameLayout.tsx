@@ -93,7 +93,7 @@ export function GameLayout({ title, movesLeft, goals, score, board, hint, onPaus
 
       <footer className="gl-footer">
         <div className="gl-hint" aria-live="polite" data-testid="hint">
-          {hint}
+          {hint ?? t('hud.gestureHint')}
         </div>
         <IconButton icon="help" label={t('hud.help')} tone="gold" onClick={onHelp} data-testid="help-button" />
       </footer>
