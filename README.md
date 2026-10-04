@@ -42,3 +42,19 @@ There is no package.json yet. Do not run npm install or npm run dev until the ag
 Baursak, kurt, kazy, samsa, zhent and tea. Match 3 to clear; 4 creates a line special; L/T creates a 3×3 cauldron; straight 5+ creates a golden ram. Swap two neighboring ram specials for a board-wide clear. Exact rules are in the specification.
 
 Build the local game with local saves first. Add the backend after a working MVP. Level balance is provisional and requires playtesting.
+
+## Cafe platform demo and mobile redesign
+
+The homepage now introduces DASTAKHAN for cafes. Open `#guest` to try the guest flow, `#demo` for the local restaurant console, and `#play` for the mobile game. The demo uses illustrative restaurant content and browser-local data; its coupons are not real prizes.
+
+```bash
+npm ci
+npm run dev
+npm run typecheck
+npm test
+npm run build
+```
+
+See [CAFE_ROADMAP.md](docs/CAFE_ROADMAP.md) for the product, economics assumptions and production architecture. The first reward policy is 50% off **one prize dish now**, or that dish free on a later visit. It is not a 50% discount on the whole bill. Real rewards require a secure backend and staff authentication.
+
+Design references: [Emil Kowalski's skills](https://github.com/emilkowalski/skills), the repository's REDESIGN.md, and the available emil-design-eng/mobile-native guidance. This update applies the guidance; it does not claim those skills have been installed on another computer.
