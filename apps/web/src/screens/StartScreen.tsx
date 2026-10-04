@@ -1,9 +1,10 @@
 import { levels } from '@dastakhan/content';
-import { FOOD_TYPES } from '@dastakhan/game-core';
+import type { FoodType } from '@dastakhan/game-core';
 import { useEffect, useRef } from 'react';
 import { hasNavigated, useApp } from '../app/AppContext.tsx';
 import { continueLevelId, levelNumber } from '../app/flow.ts';
-import { FoodIcon } from '../art/TileArt.tsx';
+import { FoodIcon, TileArt } from '../art/TileArt.tsx';
+import { IconButton } from '../components/IconButton.tsx';
 import { Button } from '../components/Button.tsx';
 import { t } from '../i18n/index.ts';
 import './screens.css';
@@ -26,21 +27,23 @@ export function StartScreen() {
 
   return (
     <main className="scr scr-start" data-testid="start-screen">
+      <header className="start-topbar"><span className="start-wordmark">DASTAKHAN<span>PLAY</span></span><IconButton icon="settings" label={t('start.settings')} onClick={() => navigate({ name: 'settings', back: { name: 'start' } })} /></header>
       <div className="start-hero">
-        <div className="start-ornament" aria-hidden="true" />
+        <p className="start-eyebrow">{t('start.eyebrow')}</p>
         <h1 ref={headingRef} tabIndex={-1} className="start-title">
           {t('app.title')}
         </h1>
         <p className="start-tagline">{t('app.tagline')}</p>
-        <div className="start-foods" aria-hidden="true">
-          {FOOD_TYPES.map((type) => (
-            <span key={type} className="start-food">
-              <FoodIcon type={type} size={30} />
-            </span>
+        <div className="start-feast" aria-hidden="true">
+          <div className="start-feast__plate"><TileArt base={null} special="RAM" /></div>
+          {(['baursak', 'tea', 'samsa', 'kazy', 'manty', 'kurt'] as FoodType[]).map((type, i) => (
+            <span key={type} className={`start-feast__dish start-feast__dish--${i}`}><FoodIcon type={type} size={64} /></span>
           ))}
+          <span className="start-feast__spark start-feast__spark--a">✦</span><span className="start-feast__spark start-feast__spark--b">✧</span>
         </div>
-        <div className="start-ornament start-ornament--bottom" aria-hidden="true" />
+        <p className="start-caption">{t('start.caption')}</p>
       </div>
+
 
       <nav className="start-menu" aria-label={t('app.title')}>
         <Button size="lg" icon="play" block onClick={play} data-testid="play-button">
@@ -59,12 +62,10 @@ export function StartScreen() {
         <Button variant="secondary" icon="book" block onClick={() => navigate({ name: 'guide', back: { name: 'start' } })}>
           {t('start.guide')}
         </Button>
-        <Button variant="ghost" icon="settings" block onClick={() => navigate({ name: 'settings', back: { name: 'start' } })}>
-          {t('start.settings')}
-        </Button>
+
       </nav>
 
-      <p className="start-note">{t('app.localNote')}</p>
+      <p className="start-note">{t('start.footnote')}</p>
     </main>
   );
 }
