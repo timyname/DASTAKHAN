@@ -3,10 +3,10 @@ import './styles/theme.css';
 import './styles/global.css';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { App } from './App.tsx';
+import { PlatformApp } from './platform/PlatformApp.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <PlatformApp />
   </StrictMode>,
 );

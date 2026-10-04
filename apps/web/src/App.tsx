@@ -58,8 +58,12 @@ function ScreenView({ screen }: { screen: Screen }) {
   }
 }
 
-function AppShell() {
-  const { screen, progress } = useApp();
+function AppShell({ cafeMode = false }: { cafeMode?: boolean }) {
+  const { screen, progress, navigate } = useApp();
+
+  useEffect(() => {
+    if (cafeMode && levels[0]) navigate({ name: 'game', levelId: levels[0].id });
+  }, [cafeMode, navigate]);
 
   useEffect(() => {
     const title = screenTitle(screen);
@@ -79,10 +83,10 @@ function AppShell() {
   );
 }
 
-export function App() {
+export function App({ cafeMode = false }: { cafeMode?: boolean }) {
   return (
     <AppProvider>
-      <AppShell />
+      <AppShell cafeMode={cafeMode} />
     </AppProvider>
   );
 }
