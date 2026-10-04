@@ -1,0 +1,74 @@
+/* Mobile-only game presentation; deliberately scoped away from the cafe platform. */
+.app {
+  --font-ui: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --radius-sm: 12px; --radius-md: 20px; --radius-lg: 28px;
+  --surface-dark-line: transparent;
+  width: min(100%, 440px); margin-inline: auto;
+  background: #143f36; font-family: var(--font-ui);
+  box-shadow: 0 0 100px #061d1840;
+}
+.app::before { position: absolute; background: radial-gradient(ellipse at 50% 18%, #275c48 0%, #143f36 55%, #10362f 100%); }
+.app button, .app a { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; touch-action: manipulation; }
+.app .ui-btn { min-height: 54px; border-radius: 16px; box-shadow: none; font-size: 16px; letter-spacing: -.02em; background: #e8c47b; }
+.app .ui-btn--secondary { background: #ffffff0c; color: #f9eed8; }
+.app .ui-btn--ghost { background: #ffffff0c; box-shadow: none; }
+.app .ui-btn--danger { background: var(--terracotta-600); }
+.app .ui-btn:active:not(:disabled) { transform: scale(.97); box-shadow: none; }
+.app .ui-btn:hover:not(:disabled) { filter: none; }
+.app .ui-icon-btn { box-shadow: none; border-radius: 16px; background: #ffffff0c; }
+.app .ui-icon-btn--gold { background: var(--gold); }
+.app .ui-icon-btn--light { background: #143f360a; }
+.app .scr, .app .scr--wide { max-width: 440px; }
+.app .scr-title { font: 650 24px/1.2 var(--font-ui); letter-spacing: -.04em; text-shadow: none; }
+.app .scr-title::after { display: none; }
+.app .scr-panel { box-shadow: none; background: #ffffff08; }
+.app .scr-panel--light { background: #f9f3e7; }
+.app .scr-panel__title { font-family: var(--font-ui); font-size: 18px; }
+.app .scr-start { justify-content: flex-start; gap: 20px; padding: max(16px, var(--safe-top)) 24px calc(24px + var(--safe-bottom)); }
+.start-topbar { display: flex; align-items: center; justify-content: space-between; }
+.start-wordmark { display: flex; align-items: center; gap: 9px; font-weight: 800; letter-spacing: .12em; font-size: 13px; }
+.start-wordmark > span { font-size: 9px; letter-spacing: .1em; padding: 4px 5px; border: 1px solid #fff4df40; border-radius: 4px; color: #dfc794; }
+.app .start-hero { padding: 18px 0 8px; background: none; box-shadow: none; border-radius: 0; }
+.start-eyebrow { color: #abc0ab; font-size: 9px; letter-spacing: .13em; font-weight: 650; margin-bottom: 15px; }
+.app .start-title { font-size: clamp(40px, 12vw, 52px); letter-spacing: -.065em; font-weight: 500; line-height: 1.15; color: #fff3d7; text-shadow: none; }
+.app .start-tagline { color: #c2d0bb; font-size: 14px; max-width: 230px; margin: 10px auto 0; }
+.start-feast { position: relative; height: 250px; width: 290px; max-width: 100%; margin: 6px auto 0; }
+.start-feast__plate { position: absolute; width: 150px; height: 150px; top: 50px; left: calc(50% - 75px); border-radius: 50%; background: radial-gradient(circle, #fff5d9 0 56%, #d9c392 57% 59%, #f3e4c1 60% 66%, #b5a177 67% 68%, #f5eacb 69%); box-shadow: 0 18px 30px #031b2640; }
+.start-feast__plate .art-tile { inset: 21%; }
+.start-feast__dish { display: grid; place-items: center; position: absolute; width: 78px; height: 78px; border-radius: 22px; background: #fff4df; box-shadow: 0 10px 24px #08211d30; }
+.start-feast__dish--0 { top: 6px; left: 27px; transform: rotate(-16deg); }
+.start-feast__dish--1 { top: 8px; right: 23px; transform: rotate(13deg); }
+.start-feast__dish--2 { top: 95px; left: -2px; transform: rotate(-10deg); width: 66px; height: 66px; }
+.start-feast__dish--3 { top: 97px; right: 0; transform: rotate(13deg); width: 66px; height: 66px; }
+.start-feast__dish--4 { bottom: 0; left: 34px; transform: rotate(10deg); }
+.start-feast__dish--5 { bottom: 0; right: 34px; transform: rotate(-13deg); }
+.start-feast__spark { position: absolute; color: #e9c784; font-size: 25px; }
+.start-feast__spark--a { top: 11px; left: 139px; }
+.start-feast__spark--b { bottom: 3px; left: 140px; }
+.start-caption { margin-top: 24px; font-size: 13px; color: #c2d0bb; }
+.app .start-menu { grid-template-columns: 1fr 1fr; gap: 10px; }
+.app .start-menu > :first-child { grid-column: 1 / -1; min-height: 58px; font-size: 18px; }
+.app .start-menu .ui-btn--secondary { font-size: 13px; padding-inline: 10px; }
+.app .start-note { margin-top: auto; color: #b4c9b4; font-size: 11px; letter-spacing: .03em; }
+.app .levels-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.app .scr-level { border-radius: 20px; box-shadow: none; }
+.app .scr-level[data-state='current'] { box-shadow: inset 0 0 0 2px #ffe8b7; }
+.app .scr-level[data-state='locked'] { background: #ffffff08; box-shadow: none; }
+.app .scr-tutorial, .app .levels-new { box-shadow: none; }
+.app .guide-cards { grid-template-columns: 1fr; }
+.app .guide-card, .app .guide-card--gold { box-shadow: none; }
+.app .guide-section__title { background: none; font-family: var(--font-ui); }
+.ui-modal { width: min(440px, 100vw); margin: auto auto 0; max-height: calc(100dvh - 32px - var(--safe-top)); border-radius: 28px 28px 0 0; box-shadow: 0 -16px 80px #03181235; padding-bottom: var(--safe-bottom); }
+.ui-modal--wide { width: min(440px, 100vw); }
+.ui-modal__ornament { height: 5px; width: 36px; border-radius: 8px; background: #143f3626; margin: 12px auto 16px; }
+.ui-modal__title { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-weight: 650; font-size: 22px; letter-spacing: -.04em; }
+.ui-modal__header { padding-inline: 24px; }
+.ui-modal__body { padding: 20px 24px; }
+.ui-modal__actions { padding: 8px 24px 24px; }
+.ui-modal .ui-btn { border-radius: 16px; box-shadow: none; min-height: 52px; }
+.ui-modal .ui-btn--ghost { box-shadow: none; background: #143f3609; }
+.ui-modal__drag { width: 100%; padding: 0; border: 0; background: transparent; touch-action: none; cursor: grab; }
+@media (hover:hover) and (pointer:fine) { .app .ui-btn:hover:not(:disabled) { filter: brightness(1.05); } }
+@media (max-height: 740px) { .app .scr-start { gap: 12px; } .app .start-hero { padding-top: 6px; } .start-feast { height: 214px; transform: scale(.88); margin-top: -8px; margin-bottom: -12px; } .start-feast__dish--4, .start-feast__dish--5 { bottom: -25px; } .start-caption { margin-top: 28px; } }
+@media (orientation: landscape) and (max-height:560px) { .app .scr-start { display:flex; max-width:440px; } }
+@media (prefers-reduced-motion: reduce) { .app *, .ui-modal { animation-duration: .01ms !important; transition-duration: .01ms !important; } }

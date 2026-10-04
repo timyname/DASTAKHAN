@@ -140,8 +140,8 @@ img {
   user-select: none;
 }
 
-.ui-btn:hover:not(:disabled) {
-  filter: brightness(1.05);
+@media (hover: hover) and (pointer: fine) {
+  .ui-btn:hover:not(:disabled) { filter: brightness(1.05); }
 }
 
 .ui-btn:active:not(:disabled) {
