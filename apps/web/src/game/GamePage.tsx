@@ -171,6 +171,8 @@ function GameRun({ setup }: { setup: Exclude<Setup, { kind: 'missing' }> }) {
     if (state.status === 'won') {
       progress.recordResult(state.levelId, state.stars, state.score);
       sfx.play('win');
+      // Demo presentation hook only; production rewards require server verification.
+      window.dispatchEvent(new CustomEvent('dastakhan:game-won', { detail: { levelId: state.levelId, score: state.score, movesLeft: state.movesLeft } }));
     } else {
       sfx.play('lose');
     }
